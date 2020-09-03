@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+<title>Sampleページasfafasdfasdfasdasd - CBC Docs</title>
+<style>
+  body {
+    background-color: #efefef !important;
+  }
+  main {
+    display: grid;
+    width: 1024px;
+    grid-template-columns: 250px 1fr;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .main__nav {
+    grid-column: 1;
+    padding: 1rem;
+  }
+  .main__nav nav {
+    padding: 1em 0px;
+  }
+  .main__nav nav div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .main__body {
+    grid-column: 2;
+    padding: 2em;
+    background-color: #fff;
+    overflow: auto;
+  }
+  .article-head span {
+    font-size: small;
+    color: #666;
+  }
+  .article-head h1 {
+    margin: 0.2rem 0px;
+  }
+  .article-head__author {
+    text-align: right;
+    font-size: small;
+  }
+  .site {
+    font-size: 2em;
+    font-weight: bold;
+    color: #454545;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 0.2em 0.5em;
+  }
+</style>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,
+                              Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+      color: #454545;
+      background-color: #fff;
+      margin: 0px;
+    }
+    .primary {
+      color: #fff;
+    }
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    a:active {
+      filter: brightness(50%);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    
+<div class="main__nav">
+  <a href="/" class="site">CBC Docs</a>
+  <nav>
+    
+      <div>
+        <a href="sample.html">
+          Sampleページ
+        </a>
+      </div>
+    
+      <div>
+        <a href="sample.html">
+          Sampleページasfafasdfasdfasdasd
+        </a>
+      </div>
+    
+  </nav>
+</div>
+<div class="main__body">
+  <div class="article-head">
+    <span>2020/09/03</span>
+    <h1>Sampleページasfafasdfasdfasdasd</h1>
+    <div class="article-head__author">Author: <i>Sakoda Takuya</i></div>
+  </div>
+  <article>
+    <h1>見出し 1</h1>
+<h2>見出し 2</h2>
+<h3>見出し 3</h3>
+<h4>見出し 4</h4>
+<h5>見出し 5</h5>
+<h6>見出し 6</h6>
+<ul>
+<li>リスト 1<ul>
+<li>ネスト リスト 1_1<ul>
+<li>ネスト リスト 1_1_1</li>
+<li>ネスト リスト 1_1_2</li>
+</ul>
+</li>
+<li>ネスト リスト 1_2</li>
+</ul>
+</li>
+<li>リスト 2</li>
+<li>リスト 3</li>
+</ul>
+<hr />
+<ol>
+<li>番号付きリスト 1<ol>
+<li>番号付きリスト 1_1</li>
+<li>番号付きリスト 1_2</li>
+</ol>
+</li>
+<li>番号付きリスト 2</li>
+<li>番号付きリスト 3</li>
+</ol>
+<hr />
+<blockquote>
+<p>お世話になります。xxx です。</p>
+<p>ご連絡いただいた、バグの件ですが、仕様です。</p>
+</blockquote>
+<hr />
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">foo</span>
+<span class="kn">import</span> <span class="nn">boo.baz</span>
+<span class="kn">import</span> <span class="nn">foo.bar.baz</span>
+
+<span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="kc">None</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="kc">None</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">baz</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+
+<p>normal <em>italic</em> normal</p>
+<p>normal <strong>bold</strong> normal</p>
+<table>
+<thead>
+<tr>
+<th align="left">header1</th>
+<th align="right">header2</th>
+<th align="center">header3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">align left</td>
+<td align="right">align right</td>
+<td align="center">align center</td>
+</tr>
+<tr>
+<td align="left">a</td>
+<td align="right">b</td>
+<td align="center">c</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://www.google.co.jp/">Google 先生</a></p>
+<details class="success"><summary>Success</summary><p>Content.</p>
+</details>
+<details class="warning classes"><summary>Warning</summary><p>Content.</p>
+</details>
+<p>あいうえお<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<dl>
+<dt>Apple</dt>
+<dd>Pomaceous fruit of plants of the genus Malus in
+the family Rosaceae.</dd>
+<dt>Orange</dt>
+<dd>The fruit of an evergreen tree of the genus Citrus.</dd>
+</dl>
+<div class="mermaid">graph TD
+    A[Hard] --&gt;|Text| B(Round)
+    B --&gt; C{Decision}
+    C --&gt;|One| D[Result 1]
+    C --&gt;|Two| E[Result 2]</div>
+
+<div>
+<div class="MathJax_Preview">
+x + y = z
+</div>
+<script type="math/tex; mode=display">
+x + y = z
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+E(\mathbf{v}, \mathbf{h}) = -\sum_{i,j}w_{ij}v_i h_j - \sum_i b_i v_i - \sum_j c_j h_j
+</div>
+<script type="math/tex; mode=display">
+E(\mathbf{v}, \mathbf{h}) = -\sum_{i,j}w_{ij}v_i h_j - \sum_i b_i v_i - \sum_j c_j h_j
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">3 &lt; 4</div>
+<script type="math/tex; mode=display">3 < 4</script>
+</div>
+<div>
+<div class="MathJax_Preview">\begin{align}
+p(v*i=1|\mathbf{h}) &amp; = \sigma\left(\sum_j w*{ij}h*j + b_i\right) \\
+p(h_j=1|\mathbf{v}) &amp; = \sigma\left(\sum_i w*{ij}v_i + c_j\right)
+\end{align}</div>
+<script type="math/tex; mode=display">\begin{align}
+p(v*i=1|\mathbf{h}) & = \sigma\left(\sum_j w*{ij}h*j + b_i\right) \\
+p(h_j=1|\mathbf{v}) & = \sigma\left(\sum_i w*{ij}v_i + c_j\right)
+\end{align}</script>
+</div>
+<p><a class="magiclink magiclink-github magiclink-repository" href="https://github.com/facelessuser/pymdown-extensions" title="GitHub Repository: facelessuser/pymdown-extensions">facelessuser/pymdown-extensions</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>ふぉお&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+  </article>
+</div>
+
+  </main>
+
+  <script>
+    window.MathJax = {
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process',
+        renderActions: {
+          find: [10, function (doc) {
+            for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              const sibling = node.previousElementSibling;
+              node.parentNode.replaceChild(text, node);
+              math.start = { node: text, delim: '', n: 0 };
+              math.end = { node: text, delim: '', n: 0 };
+              doc.math.push(math);
+              if (sibling && sibling.matches('.MathJax_Preview')) {
+                sibling.parentNode.removeChild(sibling);
+              }
+            }
+          }, '']
+        }
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script src="https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js"></script>
+</body>
+
+</html>

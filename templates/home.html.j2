@@ -2,13 +2,23 @@
 
 {% block head %}
 <title>CBC Docs</title>
+<style>
+  body {
+    text-align: center;
+  }
+</style>
 {% endblock %}
 
 {% block main %}
+<h1>CBC Docs</h1>
+<p>Code-Based Cryptographyに関するドキュメントです</p>
 <div>
-  <h1>CBC Docs</h1>
-</div>
-<div>
-  <p>Code-Based Cryptographyに関するドキュメントです</p>
+  {% for doc in docs %}
+    <div>
+      <a href="{{ doc.path }}">
+        {{ doc.title }}
+      </a>
+    </div>
+  {% endfor %}
 </div>
 {% endblock %}

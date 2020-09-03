@@ -1,9 +1,83 @@
 {% extends "layout.html.j2" %}
 
-{% block head %}
-<title>{{ title }} - CBC Docs</title>
+{% block main %}
+<div class="main__nav">
+  <a href="/" class="site">CBC Docs</a>
+  <nav>
+    {% for doc in docs %}
+      <div>
+        <a href="{{ doc.path }}">
+          {{ doc.title }}
+        </a>
+      </div>
+    {% endfor %}
+  </nav>
+</div>
+<div class="main__body">
+  <div class="article-head">
+    <span>{{ date }}</span>
+    <h1>{{ title }}</h1>
+    <div class="article-head__author">Author: <i>{{ author }}</i></div>
+  </div>
+  <article>
+    {{ body }}
+  </article>
+</div>
 {% endblock %}
 
-{% block main %}
-{{ body }}
+{% block head %}
+<title>{{ title }} - CBC Docs</title>
+<style>
+  body {
+    background-color: #efefef !important;
+  }
+  main {
+    display: grid;
+    width: 1024px;
+    grid-template-columns: 250px 1fr;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .main__nav {
+    grid-column: 1;
+    padding: 1rem;
+  }
+  .main__nav nav {
+    padding: 1em 0px;
+  }
+  .main__nav nav div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .main__body {
+    grid-column: 2;
+    padding: 2em;
+    background-color: #fff;
+    overflow: auto;
+  }
+  .article-head span {
+    font-size: small;
+    color: #666;
+  }
+  .article-head h1 {
+    margin: 0.2rem 0px;
+  }
+  .article-head__author {
+    text-align: right;
+    font-size: small;
+  }
+  .site {
+    font-size: 2em;
+    font-weight: bold;
+    color: #454545;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 0.2em 0.5em;
+  }
+</style>
 {% endblock %}
