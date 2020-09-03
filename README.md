@@ -54,7 +54,7 @@ python dev.py
 
 `./md/`内でマークダウンのファイルを作成します。今回は`./md/example.md`とします。
 
-```Markdown:example.md
+```Markdown
 これはマークダウンの例です。必ず**削除**してください。
 
 # チャプター
@@ -74,7 +74,7 @@ $$
 
 ファイルを作成したら、`manifest.json`にドキュメントを登録しましょう。
 
-```json:manifest.json
+```json
 {
   "docs": [
     {
@@ -83,7 +83,7 @@ $$
       "date": "2020/09/03",
       "author": "YAMADA TAROU"
     },
-    ...(略)...
+    // ...(略)...
   ]
 }
 ```
