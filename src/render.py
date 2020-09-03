@@ -1,9 +1,10 @@
-from markdown import markdown
+from markdown import Markdown
 from markdown import extensions
 from pymdownx import superfences
 
 extensions = [
     'pymdownx.arithmatex',
+    'pymdownx.b64',
     'pymdownx.magiclink',
     'pymdownx.details',
     'pymdownx.extra',
@@ -36,4 +37,5 @@ def render(path: str) -> str:
     with open(f"./md/{path}.md", mode="r") as f:
         text = f.read()
 
-    return markdown(text, extensions=extensions, extension_configs=extension_configs)
+    md = Markdown(extensions=extensions, extension_configs=extension_configs)
+    return md.convert(text)
