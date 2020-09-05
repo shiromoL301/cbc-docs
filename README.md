@@ -2,11 +2,13 @@
 
 Code-Based Cryptography のドキュメント
 
+[概要と進捗状況](https://github.com/shiromoL301/cbc-docs/issues/2)
+
 # 環境構築
 
 記事を閲覧 or 執筆するには、`Python`環境が必要になります。
 
-## 1. Python の仮想環境を構築する(一回目のみ)
+## 1. Python の仮想環境を構築する(**一回目のみ**)
 
 色々ありますが、今回は`venv`を紹介します。
 
@@ -24,7 +26,7 @@ python -m venv venv
 source ./venv/bin/activate
 ```
 
-## 3. 必要なライブラリをインストールする(一回目のみ)
+## 3. 必要なライブラリをインストールする(**一回目のみ**)
 
 `requirements.txt`に必要なライブラリがあるので、それをインストールします。
 
