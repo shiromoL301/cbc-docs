@@ -99,6 +99,6 @@ p(h_j=1|\mathbf{v}) & = \sigma\left(\sum_i w*{ij}v_i + c_j\right)
 
 @facelessuser/pymdown-extensions
 
-![picture](../static/Python.png)
+![picture](images/Python.png)
 
 🦐
