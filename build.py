@@ -25,7 +25,7 @@ def main():
     template = env.get_template("docs.html.j2")
     for doc in docs:
         doc_html = template.render(
-            body=render(doc["path"].split(".")[0]), docs=docs, **doc)
+            body=render(doc["path"].split(".")[0]), docs=docs, root_path="/cbc-docs", **doc)
         write_docs(doc_html, doc["path"])
 
 
