@@ -23,7 +23,6 @@ jobs:
     - name: build
       run: |
         mkdir docs
-        cp ./static/* ./docs
         python build.py
     - name: deploy
       uses: peaceiris/actions-gh-pages@v2.3.1
