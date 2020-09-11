@@ -8,6 +8,10 @@
   body {
     text-align: center;
   }
+  main {
+    margin: 0px auto;
+    max-width: 1000px;
+  }
 </style>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
@@ -18,6 +22,16 @@
       color: #454545;
       background-color: #fff;
       margin: 0px;
+    }
+    .wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      box-sizing: border-box;
+    }
+    footer {
+      padding: 6px;
+      text-align: right;
     }
     .primary {
       color: #fff;
@@ -37,8 +51,9 @@
 </head>
 
 <body>
-  <main>
-    
+  <div class="wrapper">
+    <main>
+      
 <h1>CBC Docs</h1>
 <p>Code-Based Cryptographyに関するドキュメントです</p>
 <div>
@@ -152,8 +167,19 @@
     </div>
   
 </div>
+<p>
+  <small>
+    当サイトのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めています。
+    しかし、誤情報が入り込んだり、情報が古くなったりすることもあります。必ずしも正確性を保証するものではありません。
+    当サイトに掲載された内容によって生じた損害等の一切の責任を負いかねますので、ご了承ください。
+  </small>
+</p>
 
-  </main>
+    </main>
+    <footer>
+      ©2020 ShiromoL301
+    </footer>
+  </div>
 
   <script>
     window.MathJax = {

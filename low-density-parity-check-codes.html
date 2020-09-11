@@ -10,9 +10,9 @@
   }
   main {
     display: grid;
-    width: 1024px;
+    max-width: 1250px;
     grid-template-columns: 250px 1fr;
-    margin: auto;
+    margin: 0px auto;
     box-sizing: border-box;
   }
   .main__nav {
@@ -28,10 +28,14 @@
     white-space: nowrap;
   }
   .main__body {
+    width: 1000px;
     grid-column: 2;
     padding: 2em;
     background-color: #fff;
     overflow: auto;
+  }
+  .article-head {
+    padding-bottom: 3em;
   }
   .article-head span {
     font-size: small;
@@ -50,6 +54,7 @@
     color: #454545;
   }
   table {
+    margin: 0px auto;
     border-collapse: collapse;
   }
   table td, table th {
@@ -57,7 +62,32 @@
     padding: 0.2em 0.5em;
   }
   article h1 {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    font-size: 2rem;
+  }
+  article img {
+    max-width: 100%;
+  }
+  article mjx-container {
+    overflow: auto;
+  }
+  @media screen and (max-width: 1250px) {
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .main__nav nav div {
+      display: inline-block;
+    }
+    .main__body {
+      box-sizing: border-box;
+      width: calc(100% - 1em);
+      padding: 1em;
+    }
+    article ul,article ol {
+      padding-left: 1em;
+    }
   }
 </style>
 
@@ -69,6 +99,16 @@
       color: #454545;
       background-color: #fff;
       margin: 0px;
+    }
+    .wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      box-sizing: border-box;
+    }
+    footer {
+      padding: 6px;
+      text-align: right;
     }
     .primary {
       color: #fff;
@@ -88,8 +128,9 @@
 </head>
 
 <body>
-  <main>
-    
+  <div class="wrapper">
+    <main>
+      
 <div class="main__nav">
   <a href="/cbc-docs/" class="site">CBC Docs</a>
   <nav>
@@ -218,7 +259,11 @@
   </article>
 </div>
 
-  </main>
+    </main>
+    <footer>
+      ©2020 ShiromoL301
+    </footer>
+  </div>
 
   <script>
     window.MathJax = {
