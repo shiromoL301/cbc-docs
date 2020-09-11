@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+<title>RSA暗号 - CBC Docs</title>
+<style>
+  body {
+    background-color: #efefef !important;
+  }
+  main {
+    display: grid;
+    width: 1024px;
+    grid-template-columns: 250px 1fr;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .main__nav {
+    grid-column: 1;
+    padding: 1rem;
+  }
+  .main__nav nav {
+    padding: 1em 0px;
+  }
+  .main__nav nav div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .main__body {
+    grid-column: 2;
+    padding: 2em;
+    background-color: #fff;
+    overflow: auto;
+  }
+  .article-head span {
+    font-size: small;
+    color: #666;
+  }
+  .article-head h1 {
+    margin: 0.2rem 0px;
+  }
+  .article-head__author {
+    text-align: right;
+    font-size: small;
+  }
+  .site {
+    font-size: 2em;
+    font-weight: bold;
+    color: #454545;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 0.2em 0.5em;
+  }
+  article h1 {
+    border-bottom: 1px solid #ddd;
+  }
+</style>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,
+                              Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+      color: #454545;
+      background-color: #fff;
+      margin: 0px;
+    }
+    .primary {
+      color: #fff;
+    }
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    a:active {
+      filter: brightness(50%);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    
+<div class="main__nav">
+  <a href="/" class="site">CBC Docs</a>
+  <nav>
+    
+      <div>
+        <a href="security-and-cryptography.html">
+          セキュリティと暗号技術
+        </a>
+      </div>
+    
+      <div>
+        <a href="algorithm-and-complexity.html">
+          アルゴリズムと計算量
+        </a>
+      </div>
+    
+      <div>
+        <a href="one-way-function.html">
+          一方向性関数
+        </a>
+      </div>
+    
+      <div>
+        <a href="indistinguishability.html">
+          識別不可能性
+        </a>
+      </div>
+    
+      <div>
+        <a href="semantic-security.html">
+          強秘匿性
+        </a>
+      </div>
+    
+      <div>
+        <a href="chosen-plaintext-attack.html">
+          選択平文攻撃(CPA)
+        </a>
+      </div>
+    
+      <div>
+        <a href="chosen-ciphertext-attack.html">
+          選択暗号文攻撃(CCA)
+        </a>
+      </div>
+    
+      <div>
+        <a href="rsa.html">
+          RSA暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="elgamal.html">
+          ElGamal暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="syndrome-decoding.html">
+          シンドローム復号
+        </a>
+      </div>
+    
+      <div>
+        <a href="information-set-decoding.html">
+          情報集合復号
+        </a>
+      </div>
+    
+      <div>
+        <a href="code-equivalence.html">
+          符号等価性
+        </a>
+      </div>
+    
+      <div>
+        <a href="low-density-parity-check-codes.html">
+          LDPC符号
+        </a>
+      </div>
+    
+      <div>
+        <a href="quasi-cyclic-codes.html">
+          QC符号
+        </a>
+      </div>
+    
+      <div>
+        <a href="qc-ldpc-codes.html">
+          QC-LDPC符号
+        </a>
+      </div>
+    
+      <div>
+        <a href="mc-eliece.html">
+          McEliece暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="niederreiter.html">
+          Niederreiter暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="sample.html">
+          Sampleページ
+        </a>
+      </div>
+    
+  </nav>
+</div>
+<div class="main__body">
+  <div class="article-head">
+    <span>????/??/??</span>
+    <h1>RSA暗号</h1>
+    <div class="article-head__author">Author: <i>?????????</i></div>
+  </div>
+  <article>
+    <!--
+目的: RSA暗号について理解する
+キーワード: 構成方法、安全性、量子コンピューターについて
+-->
+  </article>
+</div>
+
+  </main>
+
+  <script>
+    window.MathJax = {
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process',
+        renderActions: {
+          find: [10, function (doc) {
+            for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              const sibling = node.previousElementSibling;
+              node.parentNode.replaceChild(text, node);
+              math.start = { node: text, delim: '', n: 0 };
+              math.end = { node: text, delim: '', n: 0 };
+              doc.math.push(math);
+              if (sibling && sibling.matches('.MathJax_Preview')) {
+                sibling.parentNode.removeChild(sibling);
+              }
+            }
+          }, '']
+        }
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script src="https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js"></script>
+</body>
+
+</html>
