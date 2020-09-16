@@ -89,7 +89,35 @@
       padding-left: 1em;
     }
   }
+  article h1:before {
+    color: #aaa;
+  }
+  article h1#section-1:before {
+    content: "1. ";
+  }
+  article h1#section-2:before {
+    content: "2. ";
+  }
+  article h1#section-3:before {
+    content: "3. ";
+  }
+  article h1#section-4:before {
+    content: "4. ";
+  }
+  article h1#section-5:before {
+    content: "5. ";
+  }
 </style>
+<script>
+  window.onload = () => {
+    const articleTag = document.querySelector(".main__body article")
+    const h1Tags = articleTag.querySelectorAll("h1")
+    
+    h1Tags.forEach((tag, i) => {
+      tag.id = `section-${i+1}`
+    })
+  }
+</script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <style>
