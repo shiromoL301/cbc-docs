@@ -2,6 +2,8 @@
 
 Code-Based Cryptography のドキュメント
 
+**このメンバーでないと基本的にPRは受け付けていないのでご了承ください。**
+
 [概要と進捗状況](https://github.com/shiromoL301/cbc-docs/issues/2)
 
 # 環境構築

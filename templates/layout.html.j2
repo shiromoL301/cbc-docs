@@ -13,6 +13,16 @@
       background-color: #fff;
       margin: 0px;
     }
+    .wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      box-sizing: border-box;
+    }
+    footer {
+      padding: 6px;
+      text-align: right;
+    }
     .primary {
       color: #fff;
     }
@@ -31,10 +41,15 @@
 </head>
 
 <body>
-  <main>
-    {% block main %}
-    {% endblock %}
-  </main>
+  <div class="wrapper">
+    <main>
+      {% block main %}
+      {% endblock %}
+    </main>
+    <footer>
+      ©2020 ShiromoL301
+    </footer>
+  </div>
 
   <script>
     window.MathJax = {
