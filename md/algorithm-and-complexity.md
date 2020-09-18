@@ -165,7 +165,7 @@ Hamilton閉路問題はクラスNPである. 実際, この問題の答が「イ
 
 - D. Knuth: *The Art of Computer Programming, Vol. 1-Sorting and Searching* (2nd Edition). Addision-Wesley, Reading, 1998. 
 
-> 次の本は, NP完全に属す問題を分類して整理したもので, 基本的なNP完全問題の辞書のような役割を果たしている. (p. 198より)
+次の本は, NP完全に属す問題を分類して整理したもので, 基本的なNP完全問題の辞書のような役割を果たしている. (p. 198より)
 
 - M. R. Garey and D. S. Johnson: *Computers and Intractability-A Guide to the Theory of NP-Completeness*. Freeman, San Francisco, 1979. 
 # 参考文献 -References
