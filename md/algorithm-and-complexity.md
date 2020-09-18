@@ -160,7 +160,7 @@ $$f(n) = {\rm O}(p(n))$$
 #### Definition 3.7. クラスNP困難(class NP-hard)
 (判定問題とは限らない)一般の問題$Q$に対して, その問題が, クラスNP完全に属す問題$Q'$を部分問題として含むとき, $Q$は**クラスNP困難(class NP-hard)**に属すという. 
 
-### E.g. 3.9. クラスNP困難に属す問題
+#### Example 3.8. クラスNP困難に属す問題
 グラフ$G = (V, E)$の辺$e = {v_i, v_j} \in E$にコストと呼ばれる非負実数$c(v_i, v_j)$が指定されているとき, $G$のHamilton閉路の中でコストの和が最小のものを求めるとする. この問題は**行商人問題**または**巡回セールスマン問題(TSP: traveling salesman problem)**と呼ばれ, クラスNP困難に属す. 
 
 # 更に深く学ぶために -To Aim for the Stars
