@@ -11,9 +11,7 @@
 <br/><br/>
 百聞は一見に如かず. 具体的なアルゴリズムを以下に示そう(このように記述されたものを**疑似コード(pseudocode)**という). 
 
-> ***
-> Algorithm ${\rm MAX}(x_1, x_2, \cdots, x_n)$ (p. 3より)
-> ***
+> #### Algorithm ${\rm MAX}(x_1, x_2, \cdots, x_n)$ (p.3より)
 > 入力: 正の実数 $n, n$個の実数 $x_1, x_2, \cdots, x_n$. <br/>
 > 出力: $x_1, x_2, \cdots, x_n$ の最大値. <br/>
 > 手続き: <br/>
