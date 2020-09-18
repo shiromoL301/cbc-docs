@@ -102,17 +102,12 @@ $$f(n) = {\rm O}(p(n))$$
 
 ここまでは問題を解く個別のアルゴリズムの効率に着目してきたが, 以降は問題自身の難しさを測る方法について考える. 
 
-***
-### Definition 3.1. 判定問題(decision problem), クラスP(class P)
+#### Definition 3.1. 判定問題(decision problem), クラスP(class P)
 1. ある問題が, 「イエス」または「ノー」で答える問題であるとき, その問題は**判定問題(decision problem)**という. 
 
-2. 問題の大きさ$n$の多項式オーダ(polynomial order)のアルゴリズムが存在する判定問題の全体を**クラスP(class P)**という. 
-***
+2. 問題の大きさ$n$の多項式オーダ(polynomial order)のアルゴリズムが存在する判定問題の全体を**クラスP(class P)**[^1]という. 
 
-<!-- ここから隠す -->
-### Remark 3.2. for Definition 3. 1. 
-- クラスPの "P" は "Polynomial(多項式の)" の略である. 
-<!-- ここまで隠す -->
+[^1]: クラスPの "P" は "Polynomial(多項式の)" の略である. 
 
 ### E.g. 3.3 クラスPに属す問題 -Problems belonging to class P
 - 具体的な判定問題としては,
