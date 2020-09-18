@@ -157,7 +157,7 @@ Hamilton閉路問題はクラスNPである. 実際, この問題の答が「イ
 
 - T. H. Cormen, C. E. Leiserson and R. L. Rivert: *Introduction to Algorithms*. The MIT Press, Cambridge, 1990. 
 
-> 次の3冊は, この分野の中心的話題を徹底的に掘り下げたもので, この分野のバイブル的存在である. 何度か改訂されているが, 残念ながら, 邦訳は最近のものではない. (p. 198より)
+次の3冊は, この分野の中心的話題を徹底的に掘り下げたもので, この分野のバイブル的存在である. 何度か改訂されているが, 残念ながら, 邦訳は最近のものではない. (p. 198より)
 
 - D. Knuth: *The Art of Computer Programming, Vol. 1-Fundamental Algorithms* (3rd Edition). Addision-Wesley, Reading, 1997. 
 
