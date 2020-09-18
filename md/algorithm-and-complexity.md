@@ -108,10 +108,10 @@ $$f(n) = {\rm O}(p(n))$$
 #### Example 3.2. クラスPに属す問題 -Problems belonging to class P
 具体的な判定問題としては,
 
-    - Hamilton閉路問題(Hamilton cycle problem) <br/>
-    - クリーク問題(clique problem) <br/>
-    - 頂点被覆問題(vertex cover problem) <br/>
-    - 集合被覆問題(set cover problerm)
+- Hamilton閉路問題(Hamilton cycle problem)
+- クリーク問題(clique problem)
+- 頂点被覆問題(vertex cover problem)
+- 集合被覆問題(set cover problerm)
 
 などが挙げられる. 紙面の都合上, 各問題の詳細について, ここでは言及しない. 
 
