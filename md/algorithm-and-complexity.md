@@ -109,8 +109,8 @@ $$f(n) = {\rm O}(p(n))$$
 
 [^1]: クラスPの "P" は "Polynomial(多項式の)" の略である. 
 
-### E.g. 3.3 クラスPに属す問題 -Problems belonging to class P
-- 具体的な判定問題としては,
+#### Example 3.2. クラスPに属す問題 -Problems belonging to class P
+具体的な判定問題としては,
 
     - Hamilton閉路問題(Hamilton cycle problem) <br/>
     - クリーク問題(clique problem) <br/>
