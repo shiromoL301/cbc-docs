@@ -284,15 +284,233 @@
 </div>
 <div class="main__body">
   <div class="article-head">
-    <span>????/??/??</span>
+    <span>2020/09/17</span>
     <h1>アルゴリズムと計算量</h1>
-    <div class="article-head__author">Author: <i>?????????</i></div>
+    <div class="article-head__author">Author: <i>Fumiyan</i></div>
   </div>
   <article>
     <!--
 目的: アルゴリズムと計算量を理解する
 キーワード: アルゴリズム、計算量、多項式時間、チューリングマシン
 -->
+
+<h1>アルゴリズムとは？ -What Is Algorithm?</h1>
+<p>まずは, アルゴリズムの定義を述べよう. </p>
+<h4>Definition 1.1. アルゴリズム(algorithm)</h4>
+<p>与えられたデータから目的の情報を見つけ出したり, 作り出したりするための手続きを<strong>アルゴリズム (algorithm)</strong> という. 
+<br/><br/>
+百聞は一見に如かず. 具体的なアルゴリズムを以下に示そう(このように記述されたものを<strong>疑似コード(pseudocode)</strong>という). </p>
+<blockquote>
+<h4>Algorithm <span><span class="MathJax_Preview">{\rm MAX}(x_1, x_2, \cdots, x_n)</span><script type="math/tex">{\rm MAX}(x_1, x_2, \cdots, x_n)</script></span> (p.3より)</h4>
+<p>入力: 正の実数 <span><span class="MathJax_Preview">n, n</span><script type="math/tex">n, n</script></span>個の実数 <span><span class="MathJax_Preview">x_1, x_2, \cdots, x_n</span><script type="math/tex">x_1, x_2, \cdots, x_n</script></span>. <br/>
+出力: <span><span class="MathJax_Preview">x_1, x_2, \cdots, x_n</span><script type="math/tex">x_1, x_2, \cdots, x_n</script></span> の最大値. <br/>
+手続き: <br/>
+1. <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> ← <span><span class="MathJax_Preview">x_1</span><script type="math/tex">x_1</script></span>; <br/>
+　(注: <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> は「それまでに見た数の中の最大値」を表す. ) <br/>
+2. <strong>for</strong> <span><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span> ← <span><span class="MathJax_Preview">2</span><script type="math/tex">2</script></span> <strong>until</strong> <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span> <strong>do</strong> <br/>
+　　<strong>if</strong> <span><span class="MathJax_Preview">x_i &gt; y</span><script type="math/tex">x_i > y</script></span> <strong>then</strong> <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> ← <span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>; <br/>
+3. <strong>return</strong> <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>. <span><span class="MathJax_Preview">\fbox{}</span><script type="math/tex">\fbox{}</script></span><br/></p>
+</blockquote>
+<p>次に, 上記の例を用いて, アルゴリズムに関する用語をいくつか紹介する. </p>
+<table>
+<thead>
+<tr>
+<th align="left">用語</th>
+<th align="left">説明</th>
+<th align="left">例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">入力 (input)</td>
+<td align="left">アルゴリズムに与えられるデータ</td>
+<td align="left">正の実数 <span><span class="MathJax_Preview">n, n</span><script type="math/tex">n, n</script></span>個の実数 <span><span class="MathJax_Preview">x_1, x_2, \cdots, x_n</span><script type="math/tex">x_1, x_2, \cdots, x_n</script></span></td>
+</tr>
+<tr>
+<td align="left">出力 (output)</td>
+<td align="left">アルゴリズムによって作り出したい(求めたい)情報</td>
+<td align="left"><span><span class="MathJax_Preview">x_1, x_2, \cdots, x_n</span><script type="math/tex">x_1, x_2, \cdots, x_n</script></span> の最大値</td>
+</tr>
+<tr>
+<td align="left">ステップ (step)</td>
+<td align="left">アルゴリズム内の一つ一つの手続き</td>
+<td align="left">1. <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> ← <span><span class="MathJax_Preview">x_1</span><script type="math/tex">x_1</script></span>;</td>
+</tr>
+<tr>
+<td align="left">コメント (comment)</td>
+<td align="left">手続きを理解しやすくするための説明</td>
+<td align="left">(注: <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span> は「それまでに見た数の中の最大値」を表す.)</td>
+</tr>
+</tbody>
+</table>
+<details class="note"><summary>Note 1.2. アルゴリズムを記述する方法 -How to describe algorithms</summary><p>英語やプログラミングの文法と異なり, アルゴリズムの記述に明確な文法は存在しない. そのため, それぞれの場面や伝えたい相手の知識などに応じて, <strong>曖昧性のない厳密さと, 必要以上の細部は省略する簡潔さとのバランス</strong>を考えなければならない.</p>
+</details>
+<h1>計算量とは？ -What Is Complexity?</h1>
+<p>ある目的を達成するためのアルゴリズムは, 当然, 複数存在する. そこで, 「どのアルゴリズムがより優れているか」を判断する指標のようなもの(定量的に求めるための基準)が欲しくなるだろう. 欲を言えば, プログラムに翻訳する前に(つまり, 疑似コードのまま)どちらが優れているかを判断できると, 尚のこと嬉しい. </p>
+<p>では, アルゴリズムの優劣を比較する指標となる概念, 「オーダ」について述べよう. </p>
+<h4>Definition 2.1. オーダ(order)</h4>
+<p><span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>を<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>以上の整数, 
+<span><span class="MathJax_Preview">f(n), p(n)</span><script type="math/tex">f(n), p(n)</script></span>を自然数上で定義された関数とする. 
+任意の<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>に対して</p>
+<div>
+<div class="MathJax_Preview">\frac{f(n)}{p(n)} &lt; C</div>
+<script type="math/tex; mode=display">\frac{f(n)}{p(n)} < C</script>
+</div>
+<p>を満たすという性質を持った<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>に依らない定数<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>が存在するとき,</p>
+<div>
+<div class="MathJax_Preview">f(n) = {\rm O}(p(n))</div>
+<script type="math/tex; mode=display">f(n) = {\rm O}(p(n))</script>
+</div>
+<p>と書いて, 「<span><span class="MathJax_Preview">f(n)</span><script type="math/tex">f(n)</script></span>は, <span><span class="MathJax_Preview">p(n)</span><script type="math/tex">p(n)</script></span>の<strong>オーダ(order)</strong>である」という. 
+<br/><br/></p>
+<p>以降, 具体的なアルゴリズムに関して議論するとき,</p>
+<ol>
+<li><span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>: 入力の大きさ(input size), または問題の大きさ(problem size) <br/></li>
+<li><span><span class="MathJax_Preview">f(n)</span><script type="math/tex">f(n)</script></span>: 大きさ<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>の入力に対して, アルゴリズムが結果を出すまでに要する処理時間</li>
+</ol>
+<p>として考える. </p>
+<details class="note"><summary>Note 2.2. アルゴリズムにおけるオーダ -Orders in algorithms</summary><p>1.については問題ないだろう. 先の例(Algorithm <span><span class="MathJax_Preview">{\rm MAX}(x_1, x_2, \cdots, x_n)</span><script type="math/tex">{\rm MAX}(x_1, x_2, \cdots, x_n)</script></span>)であれば, 入力する変数<span><span class="MathJax_Preview">x_1, x_2, \cdots, x_n</span><script type="math/tex">x_1, x_2, \cdots, x_n</script></span>の個数<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>がそれに当たる. 
+2.について, 実は<span><span class="MathJax_Preview">f(n)</span><script type="math/tex">f(n)</script></span>という関数の具体的な形は分かるわけではない. と言うのも, あるアルゴリズムを</p>
+<ul>
+<li>どのようなプログラミング言語で翻訳して, </li>
+<li>どのような計算機で実行するのか</li>
+</ul>
+<p>によって, 計算時間は変わってしまう. ここでは, 計算環境が定まれば<span><span class="MathJax_Preview">f(n)</span><script type="math/tex">f(n)</script></span>という関数も定まるだろうと思ってもらえば十分だ.</p>
+</details>
+<h4>Definition 2.3. 時間複雑度(time complexity)</h4>
+<p>アルゴリズム<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>について, <span><span class="MathJax_Preview">f(n) = {\rm O}(p(n))</span><script type="math/tex">f(n) = {\rm O}(p(n))</script></span>が成り立つとき, <span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>の<strong>時間複雑度(time complexity)</strong>は<span><span class="MathJax_Preview">{\rm O}(p(n))</span><script type="math/tex">{\rm O}(p(n))</script></span>であるという. 
+<br/><br/>
+これは, 最も時間がかかる場合でも, <span><span class="MathJax_Preview">p(n)</span><script type="math/tex">p(n)</script></span>に比例する計算時間で<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>は処理を終了する, ということを意味する. </p>
+<p>ここで, 代表的な時間複雑度に対する「常識的な評価(pp. 8-9より改変)」をまとめておく. </p>
+<table>
+<thead>
+<tr>
+<th align="left">オーダ</th>
+<th align="left">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(1)</span><script type="math/tex">{\rm O}(1)</script></span></td>
+<td align="left">理想的に速い. 定数時間で処理が終了することを意味する. オーダの意味ではこれより速いものは望めない</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(log\ n)</span><script type="math/tex">{\rm O}(log\ n)</script></span></td>
+<td align="left">非常に速い</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(n)</span><script type="math/tex">{\rm O}(n)</script></span></td>
+<td align="left">速い</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(n\ log\ n)</span><script type="math/tex">{\rm O}(n\ log\ n)</script></span></td>
+<td align="left">速いと言ってよい. <span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>が小さいとき, <span><span class="MathJax_Preview">{\rm O}(n)</span><script type="math/tex">{\rm O}(n)</script></span>とあまり大きな差は見られない</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(n^2)</span><script type="math/tex">{\rm O}(n^2)</script></span></td>
+<td align="left">許されないほどではないが, かなり遅い. アルゴリズムを設計するときは, できるだけこれ以下のオーダで済むように努力をすべきである</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(n^3)</span><script type="math/tex">{\rm O}(n^3)</script></span></td>
+<td align="left">多くの場面で許される限界である. これよりオーダの大きなアルゴリズムは特殊な場合を除いて非実用的である</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">{\rm O}(c^n)</span><script type="math/tex">{\rm O}(c^n)</script></span> <br/>(<span><span class="MathJax_Preview">c(&gt;1)</span><script type="math/tex">c(>1)</script></span>は定数)</td>
+<td align="left"><strong>指数オーダ(exponential order)</strong>と呼ばれる. アルゴリズムと呼ぶのが恥ずかしいくらい遅い</td>
+</tr>
+</tbody>
+</table>
+<p>また, 時間と同様に, アルゴリズムの中で使われる記憶領域の大きさもオーダで測ることができる. </p>
+<h4>Definition 2.4. 空間複雑度(space complexity)</h4>
+<p>アルゴリズム<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>が, 大きさ<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>の入力に対して大きさ<span><span class="MathJax_Preview">g(n)</span><script type="math/tex">g(n)</script></span>ビットの記憶領域を必要とし, <span><span class="MathJax_Preview">g(n) = {\rm O}(q(n))</span><script type="math/tex">g(n) = {\rm O}(q(n))</script></span>を満たすとする. このとき, <span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>の<strong>空間複雑度(space complexity)</strong>は<span><span class="MathJax_Preview">{\rm O}(q(n))</span><script type="math/tex">{\rm O}(q(n))</script></span>であるという. </p>
+<p>また, 時間複雑度と空間複雑度を合わせて, <strong>複雑度(complexity)</strong>または<strong>計算量</strong>という. </p>
+<h1>問題の難しさの測り方 -How to Measure Problems' Hardness</h1>
+<p>ここまでは問題を解く個別のアルゴリズムの効率に着目してきたが, 以降は問題自身の難しさを測る方法について考える. </p>
+<h4>Definition 3.1. 判定問題(decision problem), クラスP(class P)</h4>
+<ol>
+<li>
+<p>ある問題が, 「イエス」または「ノー」で答える問題であるとき, その問題は<strong>判定問題(decision problem)</strong>という. </p>
+</li>
+<li>
+<p>問題の大きさ<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>の多項式オーダ(polynomial order)のアルゴリズムが存在する判定問題の全体を<strong>クラスP(class P)</strong><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>という. </p>
+</li>
+</ol>
+<h4>Example 3.2. クラスPに属す問題 -Problems belonging to class P</h4>
+<p>具体的な判定問題としては,</p>
+<div class="highlight"><pre><span></span><code>- Hamilton閉路問題(Hamilton cycle problem) &lt;br/&gt;
+- クリーク問題(clique problem) &lt;br/&gt;
+- 頂点被覆問題(vertex cover problem) &lt;br/&gt;
+- 集合被覆問題(set cover problerm)
+</code></pre></div>
+
+<p>などが挙げられる. 紙面の都合上, 各問題の詳細について, ここでは言及しない. </p>
+<p>例えばHamilton閉路問題は, 現在, 多項式オーダのアルゴリズムは見つかっていない. しかし, そのようなアルゴリズムが存在しないことが証明されているわけでもない. そのため, この問題がクラスPに属するかは, 今のところ不明である. </p>
+<h4>Definition 3.3. 非決定的計算機(nondeterministic computer), クラスNP(class NP)</h4>
+<ol>
+<li>
+<p>処理の分岐に達したとき, 可能な分岐をどの順に処理するかは指定されておらず, 好みの順序で実行できるような(架空の)計算機を<strong>非決定的計算機(nondeterministic computer)</strong>という. </p>
+</li>
+<li>
+<p>答が「イエス」のとき, 非決定的計算機によって問題の大きさの多項式時間で答を出すことができるような判定問題の全体を<strong>クラスNP(class NP)</strong><sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>という. </p>
+</li>
+</ol>
+<h4>Remark 3.4. for Definition 3.3.</h4>
+<ul>
+<li>(厳密性を欠くことを覚悟の上で言い換えると, )非決定的計算機とは, プロセッサが必要なだけいくらでも使える理想的な並列計算機だと解釈できる. </li>
+<li>クラスNPを感覚的に説明すると, 正しい答が与えられたときに, 「その答は正しい」と判定するのにかかる時間が問題の大きさの多項式時間で表せるということである. </li>
+</ul>
+<h4>Example 3.5. クラスNPに属す問題 -Problems belonging to class NP</h4>
+<p>Hamilton閉路問題はクラスNPである. 実際, この問題の答が「イエス」の場合, グラフの頂点をある順序で訪問する閉路が存在するから, その閉路の順序に沿って, グラフが辺を持つかを調べれば<span><span class="MathJax_Preview">{\rm O}(n)</span><script type="math/tex">{\rm O}(n)</script></span>の時間で処理が終わる. 
+<br/><br/></p>
+<p>定義から明らかなように, クラスPはクラスNPに含まれる. また, ミレニアム懸賞問題の1つである<strong>P<span><span class="MathJax_Preview">\neq</span><script type="math/tex">\neq</script></span>NP予想(P is not NP)</strong>は「NPに属すがPには属さない問題が存在する」という予想である. </p>
+<h4>Definition 3.6. クラスNP完全(class NP-complete)</h4>
+<p>判定問題<span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>が次の条件1., 2.を満たすとき, <span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>は<strong>クラスNP完全(class NP-complete)</strong>に属すという. </p>
+<ol>
+<li><span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>はクラスNPに属す,</li>
+<li>もし<span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>がクラスPに属せば, クラスNPに属す全ての問題がクラスPに属す. 
+<br/><br/></li>
+</ol>
+<p>条件2.は, <span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>がクラスNPに属す問題の中で最も難しい問題であることを表している. つまり, 問題の難易度に対して, <span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>が上限のような役割を果たしていると言える. </p>
+<h4>Definition 3.7. クラスNP困難(class NP-hard)</h4>
+<p>(判定問題とは限らない)一般の問題<span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>に対して, その問題が, クラスNP完全に属す問題<span><span class="MathJax_Preview">Q'</span><script type="math/tex">Q'</script></span>を部分問題として含むとき, <span><span class="MathJax_Preview">Q</span><script type="math/tex">Q</script></span>は<strong>クラスNP困難(class NP-hard)</strong>に属すという. </p>
+<h4>Example 3.8. クラスNP困難に属す問題</h4>
+<p>グラフ<span><span class="MathJax_Preview">G = (V, E)</span><script type="math/tex">G = (V, E)</script></span>の辺<span><span class="MathJax_Preview">e = {v_i, v_j} \in E</span><script type="math/tex">e = {v_i, v_j} \in E</script></span>にコストと呼ばれる非負実数<span><span class="MathJax_Preview">c(v_i, v_j)</span><script type="math/tex">c(v_i, v_j)</script></span>が指定されているとき, <span><span class="MathJax_Preview">G</span><script type="math/tex">G</script></span>のHamilton閉路の中でコストの和が最小のものを求めるとする. この問題は<strong>行商人問題</strong>または<strong>巡回セールスマン問題(TSP: traveling salesman problem)</strong>と呼ばれ, クラスNP困難に属す. </p>
+<h1>更に深く学ぶために -To Aim for the Stars</h1>
+<p>言わずと知れたアルゴリズムの名著. 出版社名からも分かるように, 世界的に有名なマサチューセッツ工科大学(MIT: Massachusetts Institute of Technology)の標準的な教科書である. 余談だが, 情報電気工学科2年次で開講されている「アルゴリズム論Ⅰ」の指定教科書は, 邦訳版の第1巻である(2020年度現在). </p>
+<ul>
+<li>T. H. Cormen, C. E. Leiserson and R. L. Rivert: <em>Introduction to Algorithms</em>. The MIT Press, Cambridge, 1990. </li>
+</ul>
+<p>次の3冊は, この分野の中心的話題を徹底的に掘り下げたもので, この分野のバイブル的存在である. 何度か改訂されているが, 残念ながら, 邦訳は最近のものではない. (p. 198より)</p>
+<ul>
+<li>
+<p>D. Knuth: <em>The Art of Computer Programming, Vol. 1-Fundamental Algorithms</em> (3rd Edition). Addision-Wesley, Reading, 1997. </p>
+</li>
+<li>
+<p>D. Knuth: <em>The Art of Computer Programming, Vol. 2-Seminumerical Algorithms</em> (3rd Edition). Addision-Wesley, Reading, 1998. </p>
+</li>
+<li>
+<p>D. Knuth: <em>The Art of Computer Programming, Vol. 1-Sorting and Searching</em> (2nd Edition). Addision-Wesley, Reading, 1998. </p>
+</li>
+</ul>
+<p>次の本は, NP完全に属す問題を分類して整理したもので, 基本的なNP完全問題の辞書のような役割を果たしている. (p. 198より)</p>
+<ul>
+<li>M. R. Garey and D. S. Johnson: <em>Computers and Intractability-A Guide to the Theory of NP-Completeness</em>. Freeman, San Francisco, 1979. </li>
+</ul>
+<h1>参考文献 -References</h1>
+<ul>
+<li>杉原厚吉:『データ構造とアルゴリズム』. 共立出版, 東京, 2001. </li>
+</ul>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>クラスPの "P" は "Polynomial(多項式の)" の略である.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>クラスNPの "NP" は "Nondeterministic Polynomial(それぞれ, 非決定的, 多項式の)" の略である.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
   </article>
 </div>
 
