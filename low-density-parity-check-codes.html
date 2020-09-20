@@ -298,15 +298,348 @@
 </div>
 <div class="main__body">
   <div class="article-head">
-    <span>????/??/??</span>
+    <span>2020/09/20</span>
     <h1>LDPC符号</h1>
-    <div class="article-head__author">Author: <i>?????????</i></div>
+    <div class="article-head__author">Author: <i>迫田 拓弥</i></div>
   </div>
   <article>
     <!--
 目的: LDPC符号について理解する
 キーワード: unknown...😇
 -->
+
+<p><strong>LDPC(Low-Density Parity-Check)符号</strong>は、1960年代にGallagerによって発見されました。
+この符号が注目されるようになったのは30年以上後のMackayによる再発見(1990年代)から<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>ですが、この再発見により符号理論界にブレイクスルーを起こしました。
+現在では、LDPC符号はイーサネットや衛星通信、LTEやWiFiにおける誤り訂正方式として標準化されています。</p>
+<p>これほど注目されるようになった大きな理由は、その復号方式によります。
+LDPC符号の復号方式は、そのタナ―グラフ(Tanner Graph)が疎であることを活用してsum-product復号法<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>と呼ばれる方法を使って復号します。
+それによって、非常に良いパフォーマンスで復号することが可能になります。
+また、適切に符号を設定するとシャノン限界に迫る特性を達成することも大きな理由の一つとして挙げられます。</p>
+<h1>LDPC符号の定義</h1>
+<p>まずは本題のLDPC符号の定義を紹介します。</p>
+<h4>定義 1.1. LDPC符号(Low-Density Parity-Check Codes)</h4>
+<p><span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>を<span><span class="MathJax_Preview">{\mathbb F}_2</span><script type="math/tex">{\mathbb F}_2</script></span>上の行列とする。<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>の成分に1が少ないとき、<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>を<strong>疎行列(sparse matrix)</strong>といい、
+疎行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>をパリティ検査行列にもつ線形符号<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>と疎行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>のペア<span><span class="MathJax_Preview">(C, H)</span><script type="math/tex">(C, H)</script></span>を<strong>LDPC符号(Low-Density Parity-Check Codes)</strong>という。
+<br/><br/></p>
+<p><span><span class="MathJax_Preview">(C, H)</span><script type="math/tex">(C, H)</script></span>を単に<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>と書くこともありますが、符号<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>から得られた<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>が疎行列であることは必ずしも言えないため、<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>だけを指してLDPC符号と呼ぶのは好ましくないとされています。</p>
+<h4>定義 1.2. 正則・非正則LDPC符号(Regular/Irregular LDPC Codes)</h4>
+<p>LDPC符号<span><span class="MathJax_Preview">(C, H)</span><script type="math/tex">(C, H)</script></span>の行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>において、全ての列のハミング重みが等しく全ての行のハミング重みが等しいとき、<strong>正則LDPC符号(Regular LDPC Codes)</strong>といい、そうでないとき<strong>非正則LDPC符号(Irregular LDPC Codes)</strong>という。
+<br/><br/></p>
+<p>正則LDPC符号は構築しやすく、非正則LDPC符号はパフォーマンスがよりよいといった特徴があります。</p>
+<h1>タナ―グラフ</h1>
+<p>LDPC符号の復号法で重要な役割を持っているタナ―グラフを見ていきます。
+タナ―グラフは行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>から表される二部グラフのことで、次のように定義されます。</p>
+<h4>定義 2.1. タナ―グラフ(Tanner Graph)</h4>
+<p><span><span class="MathJax_Preview">H=(h_{i,j})</span><script type="math/tex">H=(h_{i,j})</script></span>をサイズが<span><span class="MathJax_Preview">m\times n</span><script type="math/tex">m\times n</script></span>の<span><span class="MathJax_Preview">{\mathbb F}_2</span><script type="math/tex">{\mathbb F}_2</script></span>上の行列として、集合<span><span class="MathJax_Preview">V_c,V_v</span><script type="math/tex">V_c,V_v</script></span>をそれぞれ<span><span class="MathJax_Preview">V_c := \{c_1, c_2, \dots, c_m\}, V_v := \{v_1, v_2, \dots, v_n\}</span><script type="math/tex">V_c := \{c_1, c_2, \dots, c_m\}, V_v := \{v_1, v_2, \dots, v_n\}</script></span>とする。</p>
+<p>集合<span><span class="MathJax_Preview">V,E</span><script type="math/tex">V,E</script></span>をそれぞれ</p>
+<div>
+<div class="MathJax_Preview">\begin{eqnarray}
+V &amp;:=&amp; V_c \cup V_v\\
+E &amp;:=&amp; \{(c_i, v_j)\in V_c\times V_v\ |\ h_{i,j}=1\}
+\end{eqnarray}</div>
+<script type="math/tex; mode=display">\begin{eqnarray}
+V &:=& V_c \cup V_v\\
+E &:=& \{(c_i, v_j)\in V_c\times V_v\ |\ h_{i,j}=1\}
+\end{eqnarray}</script>
+</div>
+<p>としたとき、二部グラフ<span><span class="MathJax_Preview">G=(V,E)</span><script type="math/tex">G=(V,E)</script></span>を<strong>タナ―グラフ(Tanner Graph)</strong>という。また、<span><span class="MathJax_Preview">V_c</span><script type="math/tex">V_c</script></span>の元を<strong>検査ノード(check nodes)</strong>、<span><span class="MathJax_Preview">V_v</span><script type="math/tex">V_v</script></span>の元を<strong>変数ノード(variable nodes)</strong>という。</p>
+<h4>例 2.2.</h4>
+<p>パリティ検査行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>を以下とします:</p>
+<div>
+<div class="MathJax_Preview">
+H = 
+\begin{pmatrix}
+0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1\\
+\end{pmatrix}.
+</div>
+<script type="math/tex; mode=display">
+H = 
+\begin{pmatrix}
+0 & 1 & 1 & 1 & 1 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 & 1 & 0\\
+1 & 1 & 0 & 1 & 0 & 1 & 1\\
+\end{pmatrix}.
+</script>
+</div>
+<p>このとき、<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>から表されるタナ―グラフは次のようになります。</p>
+<p><img alt="tanner_graph" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZsAAAFpCAYAAABKwoXqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAADBASURBVHhe7d39dxTl+T/w+bF/wv7W9pzP6Tmfc1o1PV9b6YO2qQhEQAwGNYoUIiqsPMSAVtf6gFu0YY1Ko1Zc8VN0KQaDGhuq6EYUXB6iSwUMYDRBA66CNTyoK6Je37lmZ2Gy7Gbnee979v3qGWTuja3YZN57Xdc9swoBAAB4DGEDAACeQ9gAAIDnEDYAAOA5hA0AAHgOYQMAAJ5D2AAAgOcQNgAA4DmEDQAAeA5hAwAAnkPYAACA5xA2AADgOYQNAAB4DmFTxvfff0+HDx/Wjm+//VZfBQAAKxA2RXDArFu3jhYuXEjjxo2jyy+/nK644goaO3YszZs3jzo6OujEiRP6VwMAQDkImwKpVIqmT59OS5cupbfeeotOnjypv0L03Xff0Y4dO2jZsmVa+GzcuFF/BQAARoOwMfjXv/5FDQ0NtHXrVn2ltHQ6TVdddRV1dnbqKwAAUArCRrdlyxa67LLLaGBgQF8p78CBA1rgvPbaa/oKAAAU4yBshinZ2kLtbS1U2xCnPn0109FIoVAjdQ7pC5KYMWOGFjhWcVtt2rRplM1m9RUAAChkO2wyHWGKblEvsP1xqlVCFO3NrWd7ozRGUdTX1JPhFMVXpWhY8OvwCy+8QNFoVD+z7v7776c1a9boZwAAUMhm2AxQojlXzaTbakgJRSh5KlAylGhQK5uM+ls1eEJq8CgFx5i2dO5LBbFo0SJTc5pSdu7cSXPnztXPAACgkMOZTZpi5yhU02oMjwGKz46rv3L105SrcPIGE9Q0M6G9JpKJEyfSV199pZ/ZM378eGyHBgAowVnY7IhRjVJDsR36ORtKUDhfuWSzdKrgOZ6iaEOUUsf1c0EcPXqU6uvr9TP7rr76aspkuJwDAIBCjsKGNwMoSoRS+jkbWBGmeL9+ckqW0kubiqxXHsIGAMB7jsIm2xOhkDFsBhPU0po+Xc3k9cepbmyutSYiN9pov//976m1tVXbbNDX10fffPON/goAADic2QxTqrWR6prj1N3VTtHlKXXlTAMrakn5s7H+EYvTDQLvvPOOdr8N3xT6wAMPUDgcposuuohuuOEGbacaAggAqp3DsDFjmLrnKKQsETdsOAzuuece/cy6WCx2xtZnfrTN3r17EUAAACofwiZDnTND9OMRO9bEwzd18nPRrOLH1vCDOr/++mt9pTQEEABUKx/CRg789ICpU6fSBx98oK+Ul39cjZMHciKAAKAaIGwM+ILPz0czM795++23qbGxUfsoArchgAAgaBA2BbiVds0112gfMdDb2zvigs4fnsZtM951xh8x8Prrr+uveA8BBAAyQ9gUkf/wtObmZu3JADyT4YMv7vPnz6e1a9cKcVFHAAGALBA2Jnz22WfawRd30SGAAEBECJsqgAACgEpD2FQpBBAA+AlhA6cggADAKwgbGBUCCADcgLAByxBAAGAVwgZcgQACgNEgbMAzCCAAyEPYgK8QQADVCWEDFYcAAgg+hA0ICQEEECwIG5AGAghAXggbkBoCCEAOCBsIHAQQgHgQNlAVEEAAlYWwgaqFAALwD8IGwAABBOANhA1AGQggAOcQNgA2IIAArEHYALgEAQRQGsIGwEMIIIAchA2AzxBAUI0QNgACQABB0CFsAASFAIIgQdgASAQBBLJC2ABIDgEEMkDYAATQt99+iwACoSBsAKoEAggqCWEDUMXMBtDJkyf1vwPAHoQNAIyAAAIvIGwAoCwEEDiFsAEAWxBAYAXCBgBcgwCCUhA2ZXz99df08ccf08GDBymbzeqrAGAWAggYwqaIEydO0Jo1a7QfigkTJtD06dPpmmuuoYsvvlj7AUkkEvTFF1/oXw0AViGAqg/CpsDrr79OV1xxBcViMXrnnXf01dN2795NDz74IE2dOpVeeeUVfRUAnEIABRvCxuD555+nK6+8kt5++219pbRdu3bRjBkz6JlnntFXAMBtlQyg2267zfIRj8f1vxsKIWx0mzZt0iqajz76SF8p75NPPtEC59VXX9VXAMBrfgXQ7Nmzad26daaPZcuWIWxG4SBshinZ2kLtbS1U2xCnPn0109FIoVAjdQ7pCxLgBxleffXVtH37dn3FvJ07d2ottS+//FJfAQC/eRFAHDZvvPGGflaeLGGT6WmnlnlRSqxPUueKCMW6BvRXvGU7bDIdYYpuyRL1x6lWCVG0N7ee7Y3SGEVRX8udcyilWpuoqa2TuldFKLwyH0vieO6552jp0qX6mXX8zc2bBgBAHE4DKHhhoxYIt46h0JxO9XcsQ53TQ6QoUUqpZ9k9CYosbqfO9XFqaWii9h3u7r61GTYDlGjOVTPpthpSQhFKnvrnylCiQa1sMvz7YeqeE6L6VbnkzK5vodD/xCitnYmjpaXFVlWTx/ObOXPm6GcAICorARS0sBlYUacGSxN1HtYXKEvpVTGKb+LoSVH0/7VQMpdClN3Qol7Xw9Stn7vB4cwmTbFzFKppNcbHAMVnx9VfVTtiVKOof4BTQZSl4eP6bwXCW5qd3kPDW6T5nhwAkEupAPrDH/4QnLDJJikSUkhZnFSvwkUMd1M4FKLwej1dtkTVYBpD7btyp25wFjZamNRQbId+zoYSFG7LhU96qVqiNSRo4HAfpXqSlB5ytyxzw5EjR6i+vl4/s49nPo899hh1dHTgwIFD8oPvs/vNb34TnLDpjVJIUaixQ2s5lcVVUOhSvWhwiaOw4c0AihLR+n15AyvCFO/n33E/UE3SUC1F1vMfcJhSS2qpdmmqeLJWyNGjR10Lm9WrV9O///1vHDhwBOAYP358cMJGKwyMs/TThnf16TOcLA1siFP70kaqm9ROaZe7UI7CJtsTUdPSEDaDCWppTethoofNWEM6qq/XK3V6GIlj0qRJjneTjRs3Dh86BRAgs2bNCtDMJk2x8xRqWjdyCDO8IUJNbflr9mnZTRGq+Z8mV3cVO5zZ8E4zNQWb49Td1U7R5Sk9IXO0zQMNCTV2dEMcNqd3roni5ptvplTKWJ9Z85///EerbABAfvzkEH6CCL+BDNIGARpMUnRmE8XWJSnZlaDY0hh17tKv2McHKLVlwBA6KYqolVCNPhJxg8OwKUMt3cYYd6pxKXdOlFIi9dFUL774It199936mXWtra3avTbNzc20fv16beAIAPLgZx3yLRBz587VdqGtXbtWu2E7UGEzCm0kYtx9drybwmrY1K10b2rjbdiohjfFKDynnTrXtVN4XpS6B/UXBMMlMz9FwKre3l5qbGzUWmhcHXFoXXLJJdTe3k779u3TvwoARGSsYu67774Rj6qaOXNm1YSN1qVaHtWqnlRPJ7XPaaTwyvSITpVTnoeNLDg0pkyZYikg9u/fT5dffvkZIcWPsXnqqae0J0Wj2gEQS7Eqhnel5v33v/+lW2+9lc4991x68sknTR9yh433EDYGL730khY4Ziqcbdu20bRp06irq0tfKe7NN99EtQMggNGqmLz8/HXRokXazzd/nZUDYVMawqYAVzjcUrvrrru0oDB+bs1XX32lhcxf/vIX7TNu+HWzUO0A+K9cFWPEs1u+wZtDg5/+/sEHH+ivgBsQNiXw3cS8S423RV966aXaMXHiRO0dD38UgROodgC8ZaaKMXrkkUe0R0498cQTCBqPIGxMOHbsmHbzp9sKqx2+kQzVDoA9VqqYvPx8hh/Ey89FQ9B4B2EjCK52uHWHagfAGqtVTF5+PsNv+LiTgaDxFsJGMKh2AMqzU8UY5eczGzduRND4BGEjMFQ7ACPZrWKMeD7DHynA4YKg8Q/CRgKodqCaOa1i8vLzGd5NyjdhI2j8hbCRDKodqBZuVDF5xvkMQ9D4D2EjKVQ7EERuVTFGxvkMQ9BUBsImAFDtgOzcrGKMjPMZhqCpHIRNgKDaAZl4UcXkFc5nGIKmshA2AYVqB0TlVRWTl5/PrFq1Sl9B0IgAYRNwqHZABF5WMUb5+cxrr72mryBoRIGwqSKodsBvXlcxRoXzGYagEQfCpgqh2gEv+VXF5BWbzzAEjVgQNlUO1Q64xc8qJq/YfIYhaMSDsAENqh2ww+8qxqjYfIYhaMSEsIEzoNqBcipRxRgVm88wBI24EDZQEqodMKpkFZNXaj7DEDRiQ9iAKah2qlelq5i8UvMZhqARH8IGLEG1Ux1EqGKMSs1nGIJGDggbsA3VTvCIUsUYlZrPMASNPBA24BiqHbmJVsXkjTafYQgauSBswFWoduQhYhWTN9p8hiFo5IOwAU+g2hGTqFWM0WjzGYagkRPCBjyHaqfyRK5ijPLzmffff19fGQlBIy+EDfgG1Y6/ZKhi8srNZxiCRm4IG6gIVDvekaWKySs3n2EIGvkhbKCiUO24Q6YqxqjcfIYhaIIBYQPCQLVjXb6KGT9+vBRVjFG5+QxD0AQHwgaEg2pndLJWMXlm5jMMQRMsCBsQGqqd02SuYvLMzGcYgiZ4EDYghWqtdmSvYozMzGcYgiaYEDYgnWqodriKuf/++6WuYozMzGcYgia4EDYgraBVO4VVTEdHh7RVTJ7Z+QxD0AQbwqaMY8eO0f79+2lwcJCOHj2qr4JoZK52glbF5JmdzzAETfAhbIrgd5j8jpnfXfLFq6mpia699lqaMmUKzZo1i5588kkaHh7WvxpEIku1E8QqxsjsfIYhaKoDwqZAMpmkqVOn0kMPPUR79uzRV09777336OGHH6bJkydrFzIQl4jVTlCrGCOz8xmGoKkeCBuDZ599lqZPn047d+7UV0rjIOJqJ5FI6CsgqkpXO0GvYvKM85kTJ07oq6UhaKqLg7AZpmRrC7W3tVBtQ5z69NVMRyOFQo3UOaQvSGLjxo101VVX0ccff6yvlMc/XNxie+mll/QVEJ2f1U41VDF5VuYzDEFTfWyHTaYjTNEtWaL+ONUqIYr25tazvVEaoyjqa7lzGZw8eVL7xrdzMXj33Xe1WQ5vJAB5eFXtFKtigj7fszKfYQia6mQzbAYo0ZyrZtJtNaSEIpRUcycnQ4kGtbLJ8O8HqHtlJ6UHh7UfuMyeJCU60nTqSwXR2dmpvfO0i+c7fOECOblR7VRTFWNkZT7DEDTVy+HMJk2xcxSqaU3r52yA4rPj6q8sRdFQiEJqpaOE/pfqFieoT8A3efzOtrdXL81s4Orm+uuv189AVlarnWqsYvKszmcYgqa6OQubHTGqUWootkM/Z0MJCrflw0cNm4aEWuuIra6ujr7++mv9zB7+78hmRavZwK7Rqp1qrWLyrM5nGIIGHIUNbwZQlIgaKacNrAhTvF8/0cImTn2DaUr2JCk9JN7FmHcF1dfX62f28S42K5sLQA75aqexsVHb7j5x4kRtF2I1VTFGVuczDEEDzFHYZHsiFDKGzWCCWlqNM5k0tTdEqVsLmWFKt9VT7dKUUDMbfirApZdeqp/ZxzvZMhnRaziwyljFzJkzR2uXinTfjp+szmcYggbyHM5shinV2kh1zXHq7mqn6PKUujIKNYzqlTpD5SMGfsfK/Xe7vv/+e7rgggvozjvvpNWrV9P27dvxhAGJlZvFyPKUArfYmc8wBA0YOQyb0aVbf0zKpQl9s4BqiMPm9DZpUdxyyy20efNm/cy6dDqtPcaGWwuPP/443XzzzVprjltrd999NwJIEnwzr9VZjMzPZDPDznyGIWigkKdhM7wuTC3rT19gh9c1kXJejIx710Swfv16uuOOO/Qz6+69917t6QOFDhw4gAASnFs7yoJY7diZzzAEDRTjadhoc5pHIhRZ0UndqyIUnhentKDXVr7Q8FMErNq6dau2E+3RRx81tRsNASQGO1WMWUGoduzMZxiCBkrxOGzkwa0w3mnE98yY1d/frz20kx/euXz5crriiitsPboGAeQPv++LkbHasTufYQgaGA3CxoBDg9sGPT09+kppPOPhXWzcgsvjd8s33XQT/elPf6K9e/fqq/YggNzjZRVjlgzVjt35DEPQQDkImwL8A8fbWyORiNZWM17Q+Z6cTZs2abvOeEMAX/CL6erq0sLh73//u6s3eiKAzBP17n5Rqx278xmGoAEzEDYlvPzyy3T77bdrbTL+IeQWG1cy3GLo7u7Wv6o0fjCnk9aaWQigkUSoYswSpdqxO59hCBowC2FjAlcndisUN1trZlVbAIlaxZhVqWrHyXyGIWjACoSNT7xqrZkVxACSqYoxy69qx8l8hiFowCqEjY/8aq2ZJWMAyV7FmOVlteNkPsMQNGAHwqYCKtFaM0vUAApiFWOWm9WOk/kMQ9CAXQibCjK21px+xIGXKhVA1VLFmOWk2nE6n2EIGnACYVNhorXWzPIygKq5ijHLSrXjdD7DEDTgFMJGECK31sxyEkCoYuwpV+04nc8wBA24AWEjGFlaa2aVCyA+otEoqhgXFFY7/Hsn8xmGoAG3IGwEJGtrzSxu+dxzzz30u9/9js4++2z65S9/SZdffnnFNyEEBVfGkyZNopqaGlqwYIHtnWwIGnATwkZgQWitGY02ixkaGhq1Aurt7UUAmVA4nymsdt577z1tvRwEDbgNYSMBmVtrTmYxCCBrRpvPGGc7/AZmtGoHQQNeQNhIQrbWmlc7yhBAxVm5f2a0agdBA15B2EhG5NZapXaU5QNoxYoVVRdATu6fKax2+N8Xv5lB0IAXEDaSEqm15lUV40SpAFqyZElgAsiN+2fyli1bRj/72c/owgsvtDTbATALYSOxSrbWZLwvJkgB5Mb9M3nG1pmV2Q6AFQibAPCztSZiFeNEYQDxZxaJHkBOn29mNNqMxu5ONoBiEDYB4lVrrdru7hc1gNx4vpmR2c0AqHbADQibgDl69KhrrbWgVTFOVDqA3JzPMLu7zlDtgF0Im4Cy21rDM8rM8yuA3JzPMDe2N6PaAasQNgFntrWGKsYdbgeQm/MZ5kbQFEK1A2YgbKpAqdYaqhh/2Akgt+czzIugMUK1A6NB2FSRfGutqamJbrnlFq2Kuffee1HFVMBoAcT/n0yYMEGrRt3iddAUQrUDhRA2VcJYxYwbN0570nJbW1sgPsYgKDiAli5dqt1cyVWoWzMgv4PGCNUO5CFsAs44izFWMW7uWgN3FJvPOJ0BVTJoCqHaqW4ImwCyMouxu2sN3GN1PmM2gEQKGiNUO9UJYRMgpaoYM4L2CaGycOv+mcIAGjNmDP3oRz/SPiraSQvOa6h2qgfCRnJu7ihDa81fbt8/k5evaPhC7qQF5ydUO8GHsJFUYRXz1ltv6a84h9aa99y+fyavXOvM6QzID6h2gglhIxG/74tBa819Xtw/k2d3RiNqAKHaCRaEjQS8rGLKQWvNPW4/38zI7c0AogUQqh35IWwEJdrd/WitOePVfIb5tetMhABCtSMvhI1gKlnFmIHWmnVezWeYX0FTSiUDCNWOXBA2AhCtiikHrTVzPv/8c8/mM6zSQVOK3wGEakcOCJsy+ILR39+vvWv67LPP9FV3iF7FlIPWWmlezmeYqEFTil8BhGpHXAibIvibfuXKlfTHP/6RLrvsMq0FMmfOHGpoaNB+QPgH5tChQ/pXWyNbFWMGWmsjeTmfYbIFTSleBlAmk0G1IxiETQFuC02ePFnrsxfrsQ8ODmo/HPxUXr7ImiV7FVMOWms5Xs5nWFCCphQvAgjVjhgQNgZr1qyhWbNmUV9fn75SGl9M+KLyj3/8Q185UxCrmHLeeeedqmyteT2fYUEPmlLcCiCr1c6NN95o+YjH4/rfDYUchM0wJVtbqL2thWob4pS/PGc6GikUaqTOIX1BEslkkmbMmGGpPcbv5q+//nrq7u7WV3KCXsWYUU2tNa/nM6xag6YUpwFkptrhN4ivvPKK6WPZsmVShE2mp51a5kUpsT5JnSsiFOsa0F/xlu2wyXSEKbolS9Qfp1olRNHe3Hq2N0pjFEV9LXcuA74YTps2TXtXbtW+ffu0ttvBgwerrooppxpaa17PZxiCxhw7AcTVDr9JKFbt8M/xG2+8of3eDPHDRi0Qbh1DoTmd6u9Yhjqnh0hRopTSzr1lM2wGKNGcq2bSbTWkhCKUVHMnJ0OJBrWyyeinecdTFD2vnhICVjwcDPyNYhe/M+KNBNVaxZQT1Naa1/MZhqBxxkoAFVY7/AY0SGEzsKJODZYm6jysL1CW0qtiFN+U+/Nn9yQotiRO3evaKdzQRNEN7lY8Dmc2aYqdo1BNa1o/ZwMUnx1XfzXKUmrJGPUPKmbYLFy40NFHI+/Zs0fbuQajC0przY/5DEPQeKNcAHEVzt+jdXV1wQmbbJIiIYWUxUn1alwEvz49cfq6PZigeqUm171yibOw2RGjGvUfKLZDP2dDCQq3GcNH/XNsilJLW0z9hxczbHhnmdOLBrdSvvrqK/0MSpG9tcZVmtfzGYag8VexALrwwguDEza9UQopCjV2FLacdFuiajEwhtp36efcvbpUodDSkddyJxyFDW8GUJTIiH7fwIowxfv1E8bts8XdNKyGkIhhc+TIEZo6dap+Zh+/M+JNAfzNhqP8we2Kiy66SAv6aDRa9GtEO+bPn09nnXUWLV68uOjrbh38v/OLX/xCa8sWex2HP8f5558fnLDRCoPis/ThXX00rP6nr4f/mjdA8bEK1a5wr5XmKGyyPRE1LQ1ho5ZeLa1pQ5nG7bMW6uYeoaBhc+zYMe1djFNXXXWVNizmvi8O80draytdcMEF2gV848aNRb9GhGPRokU0ZcoUbb5X7HW3Dr5gjR07ltauXVv0dRz+HC+88EKwwoZHHucp1LRu5AaJ4Q0RamozXrNzshtaKBQK567dLnE4sxmmVGsj1TXHqburnaLLU4Zk5H/gCIW79BVBw4bxQPD48eP6mXXfffeddoHAHcr2iNxa82s+w9A6qwzeScpvdDgoeBMLdzr4zWNtbW2gNgjQYJKiM5soti5Jya4ExZbGqHPXyPDRqEVD40+bKDGon7vEYdiMJk3tV7ZQbKVakvLRFqYxyhgKt6nBtMu9oZMb+GJi5ZuqEO9Aa2xs1M/ALtF2rfk1n2EIGn+UChZu6z799NO0detW7QPuWPC2PpugBk1TQ4zSWgYNU9+eImFkk4dhU0DgyobfTd9+++36mXX8rpd3WfENns8++6z2Th3sE2HXGl/8vb5/Jg9B4w0rwVJM1YUNj0Gau0/vSOuPU3iVIDMbs4b3JKm7rZ4UpYZaViUpPSRWZcP4folXX31VPzNv8+bNp7Y9853k/A3Hg++//vWvtGOHcZseWFHJ1tqjjz7q+f0zeRw0XBUjaJxxGizFVFXYDHVSI2+NVkYekU366y7wr7IRHD9ihh8vY+UpAnx/Dc97tm/frq/k8Pxn3bp12gUL1Y4z/P9Hc3OzL601P+czDEFjjxfBUgyHDb/hMXsEoo3mIYSNweuvv07jxo2jl19+WV8pjdsrkyZNog0bNugrxaHacQfvDuJdg1611vyczzAEjTl+BUsxDz/8sOUDYVMawqbA7t27tae38o1dHCSffvqp/grR4cOHqaenh2677TatYrESHKh2nON/Xw899JDrrTU/5zMMQVNcJYMFvIewKYEvPPz4Ch7c8rZmrkwuv/xyuvPOO7UnvDqBascZN1trfs5nGIImB8FSfRA2JvB9NHy4DdWOM05aazyf4QrVr/kMq9agQbAAQ9gIAtWOPXZaa1wZ8eOF/JrPsGoJGgQLlIKwEQyqHXvMttb8ns+woAYNggWsQNgIDNWOdaO11vyez7CgBA2CBZxC2EiAq53Ozk5UOyYVttYqMZ9hsgYNggW8gLCRDKod8/KzmZ/+9Kfavys/yRI0CBbwC8JGUqh2ysvPZ7ii8fKG0EKiBg2CBSoJYRMAqHbOVDifsbNrzQ5RggbBAqJB2AQIqp3y98+4eUNooUoFDYIFZICwCShjtcOfhlkN1Y6V+2fcftaaX0FTLli2bduGYAEhIWwCrlqqnfx8xsr9M2611rwKGg4WfjgsggWCAGFTRYJa7Ti9f8ZJa82toEGwQNAhbKpQUKodt++fsdpasxs0CBaoRgibKidrtWNlPmOF2daa2aBBsADkIGxAI1O1Y2c+Y9VorbVSQYNgASgNYQNnELna8fv5ZoWttXzQpFIpBAuABQgbKEmkaqdSzzdjXNnMnz+ffvKTn9APf/hDGj9+PIIFwCKEDZhSyWrHq/lMMaVaYVzNnH322TRp0iRauHCh6zeEAgQdwgYs8bva4bZVXV2dJ/MZszOWwhmN2zeEAlQDhA3Y5nW14+Z8xu7wvtRmALO71gAgB2EDjrld7Tidz7i1K6xU0Bg5uSEUoJogbMBVTqsdq/MZr7YbmwkaI7TWAEaHsAFP2Kl2ys1nvAqWQlaDJi/fWrvyyivRWgMogLABz5mpdng+w6GUn8/4FSyF7AaNEVprAGdC2IBvilU7H374oXYPy7XXXqu1oPwMlkJuBI0RWmsApyFswFf5iuXOO++kc889l37wgx9oN0pyAPkZLIXcDpo8tNYAchA24JnRWmGLFi2iX/3qV/TMM89U/CkFXgWNEVprUO0QNuAKKzOWwvlMXiWeUuBH0BihtQbVCmEDltkd3ufvn4lGo6PeP+PXUwr8Dpo8tNagGiFsYFRu7Qqz+3wzr6qdSgWNEVprUE0QNnCKW8FSiC/sTp9v5ma1I0LQGKG1BtUAYVOlvAqWQqXmM07kq52xY8darnZEC5o8tNYg6BA2VcCvYDEyO59xwmq1I2rQGKG1BkGFsCnjk08+oXfffVc7Pv74Y31VXJUIlkJ25zNOlKt2ZAgaI7TWIGgQNkUcOnSIHnvsMe3ixG0NvsN9wYIF2kWbHyn/8MMPaxf1ShMhWAq5MZ9x4tixY2dUOx0dHVIFTR5aaxAkCJsC+Yvl448/rj1KpdCBAwfoySef1HZHrVu3Tl/1nojBUsiL+YwTXO3MmjWLQqGQ9u/Mj/t2vIDWGgQBwsaAL9rXXXcd9ff36yulcRDdeOON9MQTT+gr7pEhWIz8mM/YkW+d7dy5s+JPKXADWmsgMwdhM0zJ1hZqb2uh2oY49emrmY5G9Z1kI3UO6QuSePnll6mpqUm7cJr15Zdf0ty5c7WLgF2yBUuhSsxnzCg1o3Gyk00EaK2BrGyHTaYjTNEtWaL+ONUqIYr25tazvVEaoyjqa7lzGXBo8EV+9+7d+op53DK6+OKLTQWC7MFSqNLzmVJKBY1RsdmOTNUOWmsgG5thM0CJ5lw1k26rISUUoaSaOzkZSjSolU2Gf5+lvtURalneSd0rW6h+Zjulj2tfJJQ1a9bQ/fffr59Z98gjj2hzHKOgBUsh0eYzeWaCppDM1Q5aayALhzObNMXOUaimNa2fswGKz46rv6q2RKlmcZKGtfUsJRcrFJrXrZ+Lg3ebObnA7Nu3jyZPnhzYYDESdT7D7ASNkazVDlprIANnYbMjRjVKDcWM1+mhBIXbcuEzvD5MoVCYuvV0SS1RSDmv/dR8RxTjx4+nb775Rj+zh3enrVy5MlDBUkjU+QxzGjSFZKx20FoDkTkKG94MoCgRSunnbGBFmOJFN3OpFc+EENWv1GoeYRw5ckSrRJzii7AMN33aJep8hrkdNEYyVjtorYGIHIVNtidCIWPYDCaopTVNp8Y3LDtAyZXtFJ1eR3XLC14TAF9M+AfTKW6b8dMGgkjU+QzzMmgKyVTtoLUGonE4sxmmVGsj1TXHqbtLDZTlqVHmMVlK/bmGfjyzk7S9AwKZMmWKo3erJ0+epPPPP58WL16s3QzK7/6HhiTb+12EyPMZ5mfQGMlU7aC1BqJwGDajyw6mKDVoqGU2RUgpnPEIIBKJ0MaNG/Uz67Zv367db8N/Xb16Nd19991aW62+vp5uvvlmKQMoP5/5xz/+oa+IpVJBU0iWagetNag0D8MmQ53TR+4+y64Pq2FTV2KmUzkbNmygW2+9VT+zbsmSJUVv7BweHpYygESezzBRgsZIhmoHrTWoJE8rGzqcovalMerckKLkunYKTw9TvFe0jc854XBYe4qAVXwvDT95wCzRA0jk+QwTMWgKiV7toLUGleBt2EiEP0KAty+/9dZb+kp5u3bt0p4ekE4b7zOyToQAEn0+w2QIGiPRqx201sBPCBuDN998U7vnpru7W18pjVtvEyZMoJ6eHn3FXX4GkOjzGSZb0BQStdrhrf9orYEfEDYF+GkA3GLgg0OHL+h8wyfvOONH0PAPJO864yc+c2XjJy8CSPT5DJM9aIxErXbQWgOvIWxK2Lx5M9177700Y8YMrVXGF2S+uHObycnONbc5CSDR5zMsSEFTSMRqB6018ArCJoDKBVBXVxfNmzdP6PkMC3LQGIlW7aC1Bl5A2FSJfADdd999dPbZZ9Ovf/1r3zchWFEtQVNIpGoHrTVwE8KmihTOZ/zchGBFtQaNkUjVDlpr4AaETZUwO5+pdAAhaM4kQrWD1ho4hbAJODfun/ErgBA0oxOh2kFrDexC2ASYl/fPmAmgAwcO6F9dHoLGmkpXO2itgVUIm4AqnM/4wW4AIWjsq2S1g9YaWIGwCSCR7p8pF0B8LxN/xAOCxrlKVTtorYEZCJsAkeH5ZiwfQPwkhrPOOktrxzhpwcFIlap28q21xx57TOjvP6gMhE1AeDmf8UJh68ztGRDk+F3tGFtrdp6iDsGFsAmASsxnnDA7o0EAucfvaiffWuPPieLnDQIgbCQnw/PNjJxuBkAAOedntYPWGuQhbCQly3zGyKtdZwgge/yqdtBaA4awkZBs8xnmVdCUggCyxo9qB6216oawkYxs8xnmd9CUggAqz49qB6216oSwkYhs8xkmStCUggAqzctqB6216oOwkYCM8xkmetCUggAayctqhwMNrbXqgLARnIzzGSZr0JSCAMrxqtpBay34EDYCk3E+w4IWNKVUcwB5Ue2gtRZsCBtByTifYdUSNKVUYwC5Xe2gtRZMCBvByDqfYdUeNKVUSwC5Xe2gtRYsCBuByDqfYQgaa4IeQFydcJXjtNpBay04EDaCkHU+wxA07ghiALlV7aC1Jj+EjQBknc8wBI23ghRAblQ7aK3JC2FTQTLPZxiCpjJkDyCn1Q5aa3JC2FSIzPMZhqARi6wB5KTaQWtNLgibCpB5PsMQNHKQKYCcVDtorckBYeMzmeczDEEjNxkCyE61g9aa+BA2PpF9PsMQNMEkagDZqXbQWhMXwsYHss9nGIKmuogWQFarHbTWxIOw8Vh+PtPT06OvyAdBA0yEALJS7aC1JhaEjYdkn88wBA2MppIBZLbaQWtNDAgbDwRhPsMQNGCH3wFkttpBa62yEDZlfPTRR9o7Jj4+/PBDfbW0IMxnGIIG3ORXAJWrdtBaqxyETREHDx6kv/3tb9TQ0EAzZsygRYsWacfMmTO1H5AHH3yQ9u/fr3/1aUGYzzAEDfjBywAqV+2gteY/hE2B5557TntX9H//93+UyWT01dMOHTpETz/9NF188cX0zDPP6KvBmM8wBA1UkhcBNFq1g9aafxA2Bhwwc+fOLVq1FOLqh98ZPfDAA4GYzzAEDYjIrQAqVu3wWqnW2uzZs7XOhpUjHo/rfzcUchA2w5RsbaH2thaqbYhTn76a6WikUKiROof0BUmsX79e+wbkbz6zOFzmz5+vHbJD0IBMnAZQsWqnsLXGYfPGG2/Q1q1bTR38aaUyhE2mp51a5kUpsT5JnSsiFOsa0F/xlu2wyXSEKbolS9Qfp1olRNHe3Hq2N0pjFEV9LXcug+PHj9OUKVNoz549+op5g4ODNH78eK29JisEDQSBnQAqVu3885//1Fprv/3tb7WwMUv8sFELhFvHUGhOp/o7lqHO6SFSlCiltHNv2QybAUo056qZdFsNKaEIJdXcyclQokGtbLRxR5b6VscourKbOpeHqX5mlJKD2hcJhb85uR1mF/d7n3jiCf1MLggaCDIrAWSsdpYsWaK9iQxS2AysqFODpYk6D+sL6vU5vSpG8U256MkbWNVIjavPnFc75XBmk6bYOQrVtKb1czZA8dlx9Vf1j9ITocZVp0u0gVX1pJyjpuipYBLDvHnztC3Ldr333nvU1NSkn8kDQQPVqFwAdXd3a3+dOHFicMImm6RISCFlcVKNmOIym9op2txEdeo1vV64sNkRoxqlhmLGrexDCQq35cIntUT9w53XfmqeQ4MJqje03EQxbtw4OnnypH5mz6RJk+jLL7/Uz8SHoAE4rVgAcYUTmLDpjVJIUaixo1yIcGdKwLDhzQCKEhnR7xtYEaZ4v35yuI+SuwwlmjbfqT39ugB4J8rUqVP1M/v4m5O/SbkdJ/rBg8+f//zndPvttxd9HQcOHA9QbW1tcMJGKwyKz9KHd/XpMxwmaNhwmyxkDBu1cmlpTZco07KUXByi0Jxuwx+s8nhAyJsDnOIqgfu/O3fuFPpob2/Xbjzl3XfFXseBA0fu4DehwZnZpCl2nkJN60ZefYc3RKipzXjNFjRs1H9USrU2Ul1znLq72im6PFUySAZWN9L/zkzQgLNulSd45wlXOHZ98803Wivuu+++01fEhNYZgHn5rc9mib5BgAaTFJ3ZRLF1SUp2JSi2NEadxs6TRtiwMWdgVRPVq+mp/bEO91Hfqd0QYuB2ElcldvEe+5aWFv1MTAgaAGsCFzamSBw2A6taqMVw0xDPdBKCbX9+9dVX6ZZbbtHPrLvrrrvoxRdf1M/Eg6ABsA5h4y5Pw0Z7moCikDLiGLmhQBQLFizQtjxalUwm6brrrtPPxIOgAbCn2sJmeE+SkuvjFObbWebEqbsn6WoXypc2mgz48RQTJkzQWmJm8SMu+MYvJ/foeAlBA2Afhw0/89DKIX9l4x2EjcG2bdu0G7mef/55faU0roIuuugiS+98/ISgAXDmqaeesnVAcQibAgMDA9qdxOFwWPu4Ab5Yf/HFF9oNm/wctK6uLlq4cKH2wL69e/fqf5dYEDQAIBqETQlc5dx///107bXXavfh8MGPpOFnJ6VSIk6dcvJBw6EJACAKhE2AIGgAQFQIm4BA0ACAyBA2AYCgAQDRIWwkh6ABABkgbCSGoAEAWSBsJIWgAQCZIGwkhKABANkgbCSDoAEAGSFsJIKgAQBZIWwkgaABAJkhbCSAoAEA2SFsBIegAYAgQNgIDEEDAEGBsBEUggYAggRhIyAEDQAEDcJGMAgaAAgihI1AEDQAEFQIG0EgaAAgyBA2AkDQAEDQIWwqDEEDANUAYVNBCBoAqBYImwpB0ABANUHYVACCBgCqDcLGZwgaAKhGCBsfIWgAoFohbHyCoAGAaoaw8QGCBgCqHcLGYwgaAACEjacQNAAAOQgbjyBoAABOQ9h4AEEDADASwsZlCBoAgDMhbFyEoAEAKA5hU8b7779P27dvp23btlF/f7++eqYXX3wRQQMAUALCpoj9+/dTW1sbXXLJJTR79my67bbbtOP666+niRMnUmtr64jgQdAAAIwOYVOgo6OD6urqKJFI0GeffaavnjY8PKx9zZQpU7SvQdAAAJSHsDGIx+O0YMECOnDggL5S2qFDh2jx4sV0xRVXIGgAAMpwEDbDlGxtofa2FqptiFOfvprpaKRQqJE6h/QFSXR1ddHcuXPpq6++0lfK++677+imm26itWvX6isAAFCM7bDJdIQpuiVL1B+nWiVE0d7cerY3SmMURX0tdy6DI0eO0KRJk0bdAFDK0NAQjR07ljKZjL4CAACFbIbNACWac9VMuq2GlFCEkmru5GQo0aBWNsZr70n166c3UkLQaufpp5+m5cuX62fWPf7449oBAADFOZzZpCl2jkI1rWn9nA1QfHZc/ZVlKPVIlFpm11GNUi9s2ITDYdq5c6d+Zh1vj545c6Z+BgAAhZyFzY6YGiI1FNuhn7OhBIXbjOGjUtfqBQ2b77//nsaNG0fffvutvmLP5MmT6YsvvtDPAADAyFHY8GYARYlQSj9nAyvCFC8cfQgcNryVeerUqfqZfddccw0dPHhQPwMAACNHYZPtiVDIGDaDCWppTdOp8U2ewGFz/Phx7Z4Zp/hem08//VQ/AwAAI4czm2FKtTZSXXOcurvaKbo8pa4UIXDYsPr6eq3CsevEiRM0fvx4rSUHAABnchg2JgkeNnfccQclk0n9zLpUKkWLFi3SzwAAoBDCRvXaa685Cos///nP1N3drZ8BAEAhj8NmmPp6ktS9IqztWguv6KZkT1/xVluFNTc3a08RsGrDhg00Z84c/QwAAIrxp7KRAN8rw08R2Lx5s75SXm9vL1100UW0e/dufQUAAIpB2Bi89dZb2s40M886e+GFF7SnQ/O8BgAARoewKfDRRx9RJBKh6667Tvsogb1799Lnn3+u7Vbbt28fdXZ2ag/svPnmm7VqCAAAykPYlLBjxw7teWkcLNOmTdOOG264gR544AGtfQYAAOYhbAAAwHMIGwAA8BzCBgAAPIewAQAAzyFsAADAcwgbAADwHMIGAAA8h7ABAADPIWwAAMBzCBsAAPAcwgYAADyHsAEAAM8hbAAAwHMIGwAA8BzCBgAAPIewAQAAzyFsAADAY0T/H12RwLKcgHoGAAAAAElFTkSuQmCC" /></p>
+<h3>パリティ検査行列とタナ―グラフの関係</h3>
+<p>序論で説明していますが、LDPC符号の復号法はそのタナ―グラフを用いて表されることがほとんどです。
+パリティ検査行列(行列での表現)とタナ―グラフ(グラフでの表現)にはどのような関係があるのでしょうか。</p>
+<p>例2.2.を参考にしながら進めていくと、行列と比べてタナ―グラフは<strong>ある列(行)に関係している行(列)</strong>がわかりやすくなっていることがわかります。
+例えば、この<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>を用いて生成された符号語<span><span class="MathJax_Preview">{\textbf c}</span><script type="math/tex">{\textbf c}</script></span>は<span><span class="MathJax_Preview">H\cdot {\textbf c}^{\rm T}={\textbf 0}</span><script type="math/tex">H\cdot {\textbf c}^{\rm T}={\textbf 0}</script></span>と表すことができますが、
+検査ノード<span><span class="MathJax_Preview">c_i(i\in\{1, 2, 3\})</span><script type="math/tex">c_i(i\in\{1, 2, 3\})</script></span>と接続している変数ノードの集合を<span><span class="MathJax_Preview">V(c_i)</span><script type="math/tex">V(c_i)</script></span>と表すとすると、次のように表すことができます:</p>
+<div>
+<div class="MathJax_Preview">
+\prod_{c_i\in V_c} \delta\left[\sum_{v_j\in V(c_i)} c_{v_j} = 0 \right].
+</div>
+<script type="math/tex; mode=display">
+\prod_{c_i\in V_c} \delta\left[\sum_{v_j\in V(c_i)} c_{v_j} = 0 \right].
+</script>
+</div>
+<p>ここで、<span><span class="MathJax_Preview">\delta[p]</span><script type="math/tex">\delta[p]</script></span>は、<span><span class="MathJax_Preview">p</span><script type="math/tex">p</script></span>が真のときのみ<span><span class="MathJax_Preview">1</span><script type="math/tex">1</script></span>、それ以外は<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>となる関数とします。</p>
+<p>また、変数ノード<span><span class="MathJax_Preview">v_j(j\in\{1,2,\dots,7\})</span><script type="math/tex">v_j(j\in\{1,2,\dots,7\})</script></span>と接続している検査ノードの集合を<span><span class="MathJax_Preview">C(v_j)</span><script type="math/tex">C(v_j)</script></span>と表すとすると、定義1.2.は次のように言い換えることができます:</p>
+<h4>定義1.2.の言い換え</h4>
+<p>任意の<span><span class="MathJax_Preview">i, j(i\in\{1, 2,\dots, m\}, j\in\{1,2,\dots,n\})</span><script type="math/tex">i, j(i\in\{1, 2,\dots, m\}, j\in\{1,2,\dots,n\})</script></span>において、<span><span class="MathJax_Preview">|V(c_i)|</span><script type="math/tex">|V(c_i)|</script></span>と<span><span class="MathJax_Preview">|C(v_j)|</span><script type="math/tex">|C(v_j)|</script></span>がそれぞれ等しいとき正則、そうでないとき非正則という。
+<br/><br/></p>
+<p>このように、LDPC符号のパリティ検査行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>で定義されていた概念をタナ―グラフを用いて言い換えることが可能であることがわかったと思います。
+復号法のみでなく、<strong>パリティ検査行列で説明される概念はパリティ検査行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>とタナ―グラフの両方の表現で考えることが重要になります。</strong></p>
+<h1>符号化について</h1>
+<p>定義1.2.の後に述べていますが、LDPC符号が正則のとき構成するのは簡単ですが、非正則かつ擬巡回(quasi-cyclic)の性質を持っていないときは複雑になります。
+その場合の符号化手法の一つである下三角行列(lower-trianglar matrix)での後退代入(back substitution)については参考文献3.で紹介されています。
+非正則で擬巡回の場合は、(恐らく)QC-LDPC符号で紹介していると思います。</p>
+<p>以上の理由から、ここでの符号化についての説明は割愛します。</p>
+<h1>復号化の概要</h1>
+<p>復号化についても、ここから説明していくと非常に長くなると考えられるため簡単に説明します。</p>
+<p>復号化において、LDPC符号が優れている理由は、復号法であるsum-product復号法は確率伝播によるものであり、
+この確率がパリティ検査行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>が疎であるほど良いパフォーマンスで求まるということにあります。
+具体的に言うと、<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>のタナ―グラフにサイクルがない、もしくは少ないほうが好まれる傾向にあります。</p>
+<p>まずは、sum-product復号法を定義していきます:</p>
+<h4>定義 4.1 (確率領域)sum-product 復号法</h4>
+<p>入力: <span><span class="MathJax_Preview">{\mathbb F}_2</span><script type="math/tex">{\mathbb F}_2</script></span>上の <span><span class="MathJax_Preview">m\times n</span><script type="math/tex">m\times n</script></span> 行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>、<span><span class="MathJax_Preview">y\in {\mathbb F}_2^{n}</span><script type="math/tex">y\in {\mathbb F}_2^{n}</script></span>、整数 <span><span class="MathJax_Preview">l_{\rm max}</span><script type="math/tex">l_{\rm max}</script></span></p>
+<p>出力: <span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>が与える線形符号<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>の符号語<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> あるいは記号<span><span class="MathJax_Preview">?</span><script type="math/tex">?</script></span> </p>
+<h4>1. 初期化：</h4>
+<p><span><span class="MathJax_Preview">h_{i,j} = 1</span><script type="math/tex">h_{i,j} = 1</script></span>を満たす全ての組<span><span class="MathJax_Preview">(i,j)</span><script type="math/tex">(i,j)</script></span>に対して、<span><span class="MathJax_Preview">\beta_{i,j}(x)\in {\mathbb R}</span><script type="math/tex">\beta_{i,j}(x)\in {\mathbb R}</script></span>を以下で定義する:</p>
+<div>
+<div class="MathJax_Preview">\beta_{i,j}(x) := P(y_j|x).</div>
+<script type="math/tex; mode=display">\beta_{i,j}(x) := P(y_j|x).</script>
+</div>
+<p>ただし、<span><span class="MathJax_Preview">x\in \{0,1\}</span><script type="math/tex">x\in \{0,1\}</script></span>であり、<span><span class="MathJax_Preview">P(a|b)</span><script type="math/tex">P(a|b)</script></span>は <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> のとき <span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span> となる確率とする。
+また、反復回数のカウンタとして<span><span class="MathJax_Preview">l:=1</span><script type="math/tex">l:=1</script></span>とする。</p>
+<h4>2. 行処理：</h4>
+<p><span><span class="MathJax_Preview">h_{i,j} = 1</span><script type="math/tex">h_{i,j} = 1</script></span>を満たす全ての組<span><span class="MathJax_Preview">(i,j)</span><script type="math/tex">(i,j)</script></span>に対して、<span><span class="MathJax_Preview">\alpha_{i,j}(x)\in {\mathbb R}</span><script type="math/tex">\alpha_{i,j}(x)\in {\mathbb R}</script></span>を以下で定義する:</p>
+<div>
+<div class="MathJax_Preview">
+\alpha_{i,j}(x) := K \sum_{c_{\ V(i)\setminus \{j\}}} \delta\left[\sum_{v\in V(i)\setminus \{j\}}c_v = x\right] \times \prod_{j'\in V(i)\setminus \{j\}} \beta_{i,j'}(c_{j'})
+</div>
+<script type="math/tex; mode=display">
+\alpha_{i,j}(x) := K \sum_{c_{\ V(i)\setminus \{j\}}} \delta\left[\sum_{v\in V(i)\setminus \{j\}}c_v = x\right] \times \prod_{j'\in V(i)\setminus \{j\}} \beta_{i,j'}(c_{j'})
+</script>
+</div>
+<p>ここで、定数<span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span>は<span><span class="MathJax_Preview">\alpha_{i,j}(0)+\alpha_{i,j}(1)=1</span><script type="math/tex">\alpha_{i,j}(0)+\alpha_{i,j}(1)=1</script></span>を満たすように定める。また、  </p>
+<div>
+<div class="MathJax_Preview">\sum_{c_{\{1, 2, \dots, m\}}} := \sum_{c_{1}\in {\mathbb F}_2}\sum_{c_{2}\in {\mathbb F}_2}\cdots \sum_{c_{m}\in {\mathbb F}_2}</div>
+<script type="math/tex; mode=display">\sum_{c_{\{1, 2, \dots, m\}}} := \sum_{c_{1}\in {\mathbb F}_2}\sum_{c_{2}\in {\mathbb F}_2}\cdots \sum_{c_{m}\in {\mathbb F}_2}</script>
+</div>
+<p>とする。</p>
+<h4>3. 列処理：</h4>
+<p><span><span class="MathJax_Preview">h_{i,j} = 1</span><script type="math/tex">h_{i,j} = 1</script></span>を満たす全ての組<span><span class="MathJax_Preview">(i,j)</span><script type="math/tex">(i,j)</script></span>に対して、<span><span class="MathJax_Preview">\beta_{i,j}(x)\in {\mathbb R}</span><script type="math/tex">\beta_{i,j}(x)\in {\mathbb R}</script></span>を以下のように更新する:</p>
+<div>
+<div class="MathJax_Preview">
+\beta_{i,j}(x) := K'P(y_j|x)\prod_{i'\in C(j)\setminus \{i\}}\alpha_{i',j}(x).
+</div>
+<script type="math/tex; mode=display">
+\beta_{i,j}(x) := K'P(y_j|x)\prod_{i'\in C(j)\setminus \{i\}}\alpha_{i',j}(x).
+</script>
+</div>
+<p>同様に、定数<span><span class="MathJax_Preview">K'</span><script type="math/tex">K'</script></span>は<span><span class="MathJax_Preview">\beta_{i,j}(0)+\beta_{i,j}(1)=1</span><script type="math/tex">\beta_{i,j}(0)+\beta_{i,j}(1)=1</script></span>を満たすように定める。</p>
+<h4>4. 一時推定：</h4>
+<p><span><span class="MathJax_Preview">j\in \{1, 2, \dots, n\}</span><script type="math/tex">j\in \{1, 2, \dots, n\}</script></span>に対して、<span><span class="MathJax_Preview">\gamma_{j}(x)\in {\mathbb R}</span><script type="math/tex">\gamma_{j}(x)\in {\mathbb R}</script></span>を以下のように求める:</p>
+<div>
+<div class="MathJax_Preview">
+\gamma_{j}(x) := P(y_j|x)\prod_{i\in C(j)}\alpha_{i,j}(x).
+</div>
+<script type="math/tex; mode=display">
+\gamma_{j}(x) := P(y_j|x)\prod_{i\in C(j)}\alpha_{i,j}(x).
+</script>
+</div>
+<p>そして、<span><span class="MathJax_Preview">\gamma_{j}(0) \geq \gamma_{j}(1)</span><script type="math/tex">\gamma_{j}(0) \geq \gamma_{j}(1)</script></span>のとき、<span><span class="MathJax_Preview">\hat{c}_{j}:=0</span><script type="math/tex">\hat{c}_{j}:=0</script></span>、そうでないときは<span><span class="MathJax_Preview">\hat{c}_{j}:=1</span><script type="math/tex">\hat{c}_{j}:=1</script></span>とする。</p>
+<h4>5. パリティ検査：</h4>
+<p><span><span class="MathJax_Preview">H\cdot (\hat{c}_{1}, \hat{c}_{2}, \dots, \hat{c}_{n})^{\rm T}={\textbf 0}</span><script type="math/tex">H\cdot (\hat{c}_{1}, \hat{c}_{2}, \dots, \hat{c}_{n})^{\rm T}={\textbf 0}</script></span>を満たすならば、<span><span class="MathJax_Preview">c:=(\hat{c}_{1}, \hat{c}_{2}, \dots, \hat{c}_{n})</span><script type="math/tex">c:=(\hat{c}_{1}, \hat{c}_{2}, \dots, \hat{c}_{n})</script></span>
+を出力する。そうでないときは6.へ</p>
+<h4>6.</h4>
+<p><span><span class="MathJax_Preview">l \geq l_{\rm max}</span><script type="math/tex">l \geq l_{\rm max}</script></span>ならば、<span><span class="MathJax_Preview">?</span><script type="math/tex">?</script></span> を出力する。そうでないときは、<span><span class="MathJax_Preview">l = l+1</span><script type="math/tex">l = l+1</script></span>として3.へ
+<br/><br/></p>
+<h4>例 4.2</h4>
+<p>定義4.1.で説明されたsum-product復号法の例をあげていきます。
+まず最初に、パリティ検査行列<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>を次のように設定します:</p>
+<div>
+<div class="MathJax_Preview">
+H= \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\
+\end{pmatrix}.
+</div>
+<script type="math/tex; mode=display">
+H= \begin{pmatrix}
+0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\
+1 & 1 & 1 & 0 & 1 & 0 & 1 & 1 \\
+\end{pmatrix}.
+</script>
+</div>
+<p>また、<span><span class="MathJax_Preview">y = (0, 0, 1, 1, 0, 1, 0, 0)</span><script type="math/tex">y = (0, 0, 1, 1, 0, 1, 0, 0)</script></span>、<span><span class="MathJax_Preview">l_{\rm max}=5</span><script type="math/tex">l_{\rm max}=5</script></span>として、任意の <span><span class="MathJax_Preview">a, b\in {\mathbb F}_2</span><script type="math/tex">a, b\in {\mathbb F}_2</script></span>において<span><span class="MathJax_Preview">P(a|b)=\frac{3}{4} (a = b), \frac{1}{4} (a \neq b)</span><script type="math/tex">P(a|b)=\frac{3}{4} (a = b), \frac{1}{4} (a \neq b)</script></span>とします。</p>
+<details><summary>初期化</summary><p><span><span class="MathJax_Preview">\beta(x):=(\beta_{i,j}(x)), x\in \{0, 1\}</span><script type="math/tex">\beta(x):=(\beta_{i,j}(x)), x\in \{0, 1\}</script></span>は次のようになります:</p>
+<div>
+<div class="MathJax_Preview">
+\beta(0) = \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 1/4 &amp; 3/4 &amp; 1/4 &amp; 0 &amp; 0 \\
+3/4 &amp; 0 &amp; 0 &amp; 1/4 &amp; 0 &amp; 0 &amp; 0 &amp; 3/4 \\
+3/4 &amp; 3/4 &amp; 1/4 &amp; 0 &amp; 3/4 &amp; 0 &amp; 3/4 &amp; 3/4 \\
+\end{pmatrix},
+</div>
+<script type="math/tex; mode=display">
+\beta(0) = \begin{pmatrix}
+0 & 0 & 0 & 1/4 & 3/4 & 1/4 & 0 & 0 \\
+3/4 & 0 & 0 & 1/4 & 0 & 0 & 0 & 3/4 \\
+3/4 & 3/4 & 1/4 & 0 & 3/4 & 0 & 3/4 & 3/4 \\
+\end{pmatrix},
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\beta(1) = \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 3/4 &amp; 1/4 &amp; 3/4 &amp; 0 &amp; 0 \\
+1/4 &amp; 0 &amp; 0 &amp; 3/4 &amp; 0 &amp; 0 &amp; 0 &amp; 1/4 \\
+1/4 &amp; 1/4 &amp; 3/4 &amp; 0 &amp; 1/4 &amp; 0 &amp; 1/4 &amp; 1/4 \\
+\end{pmatrix}.
+</div>
+<script type="math/tex; mode=display">
+\beta(1) = \begin{pmatrix}
+0 & 0 & 0 & 3/4 & 1/4 & 3/4 & 0 & 0 \\
+1/4 & 0 & 0 & 3/4 & 0 & 0 & 0 & 1/4 \\
+1/4 & 1/4 & 3/4 & 0 & 1/4 & 0 & 1/4 & 1/4 \\
+\end{pmatrix}.
+</script>
+</div>
+</details>
+<details><summary>行処理</summary><p>手順2.より、<span><span class="MathJax_Preview">\alpha_{i,j}(x)</span><script type="math/tex">\alpha_{i,j}(x)</script></span>を求めていきます。</p>
+<p>例えば、<span><span class="MathJax_Preview">\alpha_{1,5}(x)</span><script type="math/tex">\alpha_{1,5}(x)</script></span>を考えていくとしましょう。
+<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>のタナ―グラフの検査ノード<span><span class="MathJax_Preview">c_i</span><script type="math/tex">c_i</script></span>に隣接している変数ノードは<span><span class="MathJax_Preview">V(i)=\{4,5,6\}</span><script type="math/tex">V(i)=\{4,5,6\}</script></span>の三つですね。
+よって、<span><span class="MathJax_Preview">\alpha_{1,5}(x)</span><script type="math/tex">\alpha_{1,5}(x)</script></span>を書き直すと次のようになります:</p>
+<div>
+<div class="MathJax_Preview">
+\alpha_{1,5}(x) = K\left(\sum_{c_4\in {\mathbb F}_2}\sum_{c_6\in {\mathbb F}_2} \delta\left[\sum_{v\in \{4,6\}} c_{v} = x \right]\times \prod_{j'\in \{4,6\}} \beta_{i, j'}(c_{j'}) \right)
+</div>
+<script type="math/tex; mode=display">
+\alpha_{1,5}(x) = K\left(\sum_{c_4\in {\mathbb F}_2}\sum_{c_6\in {\mathbb F}_2} \delta\left[\sum_{v\in \{4,6\}} c_{v} = x \right]\times \prod_{j'\in \{4,6\}} \beta_{i, j'}(c_{j'}) \right)
+</script>
+</div>
+<p>ここから<span><span class="MathJax_Preview">x = 0</span><script type="math/tex">x = 0</script></span>の場合と<span><span class="MathJax_Preview">x = 1</span><script type="math/tex">x = 1</script></span>の場合に分けて見ていきましょう。
+<span><span class="MathJax_Preview">x=0</span><script type="math/tex">x=0</script></span>のとき、<span><span class="MathJax_Preview">\delta[\dots]</span><script type="math/tex">\delta[\dots]</script></span>が<span><span class="MathJax_Preview">1</span><script type="math/tex">1</script></span>になるのは、<span><span class="MathJax_Preview">c_4, c_6 = 0\ {\rm or}\ 1</span><script type="math/tex">c_4, c_6 = 0\ {\rm or}\ 1</script></span>のときですね。よって、</p>
+<div>
+<div class="MathJax_Preview">
+\alpha_{1,5}(0) = K \left(\frac{1}{4}\cdot \frac{1}{4}+\frac{3}{4}\cdot \frac{3}{4}\right) = K\cdot \frac{5}{8}
+</div>
+<script type="math/tex; mode=display">
+\alpha_{1,5}(0) = K \left(\frac{1}{4}\cdot \frac{1}{4}+\frac{3}{4}\cdot \frac{3}{4}\right) = K\cdot \frac{5}{8}
+</script>
+</div>
+<p>同様にして、<span><span class="MathJax_Preview">x=1</span><script type="math/tex">x=1</script></span>のときは、<span><span class="MathJax_Preview">c_4, c_6 = 0, 1 \ {\rm or}\ 1, 0</span><script type="math/tex">c_4, c_6 = 0, 1 \ {\rm or}\ 1, 0</script></span>のときであり、</p>
+<div>
+<div class="MathJax_Preview">
+\alpha_{1,5}(1) = K \left(\frac{1}{4}\cdot \frac{3}{4}+\frac{3}{4}\cdot \frac{1}{4}\right) = K\cdot \frac{3}{8}
+</div>
+<script type="math/tex; mode=display">
+\alpha_{1,5}(1) = K \left(\frac{1}{4}\cdot \frac{3}{4}+\frac{3}{4}\cdot \frac{1}{4}\right) = K\cdot \frac{3}{8}
+</script>
+</div>
+<p>したがって、<span><span class="MathJax_Preview">\alpha_{1,5}(0) = \frac{5}{8}</span><script type="math/tex">\alpha_{1,5}(0) = \frac{5}{8}</script></span><span><span class="MathJax_Preview">,\alpha_{1,5}(1) = \frac{3}{8}</span><script type="math/tex">,\alpha_{1,5}(1) = \frac{3}{8}</script></span>となります。
+同様に進めていくと、<span><span class="MathJax_Preview">\alpha(x)=(\alpha_{i,j}(x))</span><script type="math/tex">\alpha(x)=(\alpha_{i,j}(x))</script></span>は次のようになります:</p>
+<div>
+<div class="MathJax_Preview">
+\alpha(0) = \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 3/8 &amp; 5/8 &amp; 3/8 &amp; 0 &amp; 0 \\
+3/8 &amp; 0 &amp; 0 &amp; 5/8 &amp; 0 &amp; 0 &amp; 0 &amp; 3/8 \\
+31/64 &amp; 31/64 &amp; 33/64 &amp; 0 &amp; 31/64 &amp; 0 &amp; 31/64 &amp; 31/64 \\
+\end{pmatrix},
+</div>
+<script type="math/tex; mode=display">
+\alpha(0) = \begin{pmatrix}
+0 & 0 & 0 & 3/8 & 5/8 & 3/8 & 0 & 0 \\
+3/8 & 0 & 0 & 5/8 & 0 & 0 & 0 & 3/8 \\
+31/64 & 31/64 & 33/64 & 0 & 31/64 & 0 & 31/64 & 31/64 \\
+\end{pmatrix},
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\alpha(1) = \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 5/8 &amp; 3/8 &amp; 5/8 &amp; 0 &amp; 0 \\
+5/8 &amp; 0 &amp; 0 &amp; 3/8 &amp; 0 &amp; 0 &amp; 0 &amp; 5/8 \\
+33/64 &amp; 33/64 &amp; 31/64 &amp; 0 &amp; 33/64 &amp; 0 &amp; 33/64 &amp; 33/64 \\
+\end{pmatrix}.
+</div>
+<script type="math/tex; mode=display">
+\alpha(1) = \begin{pmatrix}
+0 & 0 & 0 & 5/8 & 3/8 & 5/8 & 0 & 0 \\
+5/8 & 0 & 0 & 3/8 & 0 & 0 & 0 & 5/8 \\
+33/64 & 33/64 & 31/64 & 0 & 33/64 & 0 & 33/64 & 33/64 \\
+\end{pmatrix}.
+</script>
+</div>
+</details>
+<details><summary>列処理</summary><p>次に手順3.にいきます。先ほどの列バージョンになっています。最終的に<span><span class="MathJax_Preview">\beta(x)</span><script type="math/tex">\beta(x)</script></span>は次のようになります:</p>
+<div>
+<div class="MathJax_Preview">
+\beta(0) = \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 5/14 &amp; 31/42 &amp; 1/4 &amp; 0 &amp; 0 \\
+31/42 &amp; 0 &amp; 0 &amp; 1/6 &amp; 0 &amp; 0 &amp; 0 &amp; 31/42 \\
+9/14 &amp; 3/4 &amp; 1/4 &amp; 0 &amp; 5/6 &amp; 0 &amp; 3/4 &amp; 9/14 \\
+\end{pmatrix},
+</div>
+<script type="math/tex; mode=display">
+\beta(0) = \begin{pmatrix}
+0 & 0 & 0 & 5/14 & 31/42 & 1/4 & 0 & 0 \\
+31/42 & 0 & 0 & 1/6 & 0 & 0 & 0 & 31/42 \\
+9/14 & 3/4 & 1/4 & 0 & 5/6 & 0 & 3/4 & 9/14 \\
+\end{pmatrix},
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\beta(1) = \begin{pmatrix}
+0 &amp; 0 &amp; 0 &amp; 9/14 &amp; 11/42 &amp; 3/4 &amp; 0 &amp; 0 \\
+11/42 &amp; 0 &amp; 0 &amp; 5/6 &amp; 0 &amp; 0 &amp; 0 &amp; 11/42 \\
+5/14 &amp; 1/4 &amp; 3/4 &amp; 0 &amp; 1/6 &amp; 0 &amp; 1/4 &amp; 5/14 \\
+\end{pmatrix}.
+</div>
+<script type="math/tex; mode=display">
+\beta(1) = \begin{pmatrix}
+0 & 0 & 0 & 9/14 & 11/42 & 3/4 & 0 & 0 \\
+11/42 & 0 & 0 & 5/6 & 0 & 0 & 0 & 11/42 \\
+5/14 & 1/4 & 3/4 & 0 & 1/6 & 0 & 1/4 & 5/14 \\
+\end{pmatrix}.
+</script>
+</div>
+</details>
+<details><summary>一時推定</summary><p>手順4.に移ります。一ビットずつ列ベクトルから符号語の予想を出していきます。
+最終的な<span><span class="MathJax_Preview">\hat{c}</span><script type="math/tex">\hat{c}</script></span>は次のようになります:</p>
+<div>
+<div class="MathJax_Preview">
+\hat{c} = (0, 0, 1, 1, 0, 1, 0, 0 ).
+</div>
+<script type="math/tex; mode=display">
+\hat{c} = (0, 0, 1, 1, 0, 1, 0, 0 ).
+</script>
+</div>
+<p>まだ初期の<span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>と同じですね。
+もちろんパリティ検査行列とかけても<span><span class="MathJax_Preview">{\textbf 0}</span><script type="math/tex">{\textbf 0}</script></span>とはならないので、<span><span class="MathJax_Preview">l</span><script type="math/tex">l</script></span> を増やしてループします。</p>
+</details>
+<p>という風な感じで復号が進んでいきます。最終的にどうなるか気になったら、ぜひ手を動かして見てください。
+めちゃくちゃ大変です。😇(ちなみに自分は <span><span class="MathJax_Preview">l=2</span><script type="math/tex">l=2</script></span>で諦めました)</p>
+<p>今回は、一般的なsum-product復号法を紹介しましたが、対数を使ったsum-product復号法もあり、こちらの方がコンピュータなどで計算する際に都合がよくなります。</p>
+<h1>参考文献</h1>
+<ol>
+<li>井坂元彦,「知識の森」6章 ターボ符号・LDPC符号, <em>電子情報通信学会</em>, 2012</li>
+<li>萩原学, 「符号理論」, <em>日本評論社</em>, 2012</li>
+<li>Marco Baldi, QC-LDPC Code-Based Cryptography, <em>Springer</em>, 2014</li>
+<li>IEEE, Enhancing the error-correcting performance of LDPC codes for LTE and WiFi, <a href="https://ieeexplore.ieee.org/abstract/document/7148600">https://ieeexplore.ieee.org/abstract/document/7148600</a>, 2015</li>
+</ol>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>当時では、符号長が大きいと計算量が莫大になるなどの理由によって影を潜めていたそうです&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>sum-productアルゴリズム(SPA)に基づく反復復号法(iterative decoding)のこと。ターボ符号(1993~, turbo codes)もこの復号法を使うことができるため注目されています。&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
   </article>
 </div>
 
