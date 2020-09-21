@@ -110,19 +110,19 @@
   article h1:before {
     color: #aaa;
   }
-  article h1#section-1:before {
+  article h1#ch-1:before {
     content: "1. ";
   }
-  article h1#section-2:before {
+  article h1#ch-2:before {
     content: "2. ";
   }
-  article h1#section-3:before {
+  article h1#ch-3:before {
     content: "3. ";
   }
-  article h1#section-4:before {
+  article h1#ch-4:before {
     content: "4. ";
   }
-  article h1#section-5:before {
+  article h1#ch-5:before {
     content: "5. ";
   }
   article details {
@@ -157,10 +157,10 @@
 <script>
   window.onload = () => {
     const articleTag = document.querySelector(".main__body article")
+    // タグのナンバリング付け
     const h1Tags = articleTag.querySelectorAll("h1")
-    
     h1Tags.forEach((tag, i) => {
-      tag.id = `section-${i+1}`
+      tag.id = `ch-${i+1}`
     })
   }
 </script>
