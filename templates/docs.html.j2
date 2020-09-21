@@ -76,6 +76,9 @@
     font-weight: bold;
     color: #454545;
   }
+  .center {
+    text-align: center;
+  }
   table {
     margin: 1em auto;
     border-collapse: collapse;
@@ -103,6 +106,7 @@
   }
   article img {
     max-width: 100%;
+    margin: 1em 0px;
   }
   article mjx-container {
     overflow: auto;
@@ -161,6 +165,11 @@
     const h1Tags = articleTag.querySelectorAll("h1")
     h1Tags.forEach((tag, i) => {
       tag.id = `ch-${i+1}`
+    })
+    // 画像を中央に配置させる
+    const imgTags = articleTag.querySelectorAll("p img")
+    imgTags.forEach(tag => {
+      tag.parentNode.classList.add("center")
     })
   }
 </script>
