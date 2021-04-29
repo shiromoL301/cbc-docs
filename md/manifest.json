@@ -55,6 +55,12 @@
       "author": "?????????"
     },
     {
+      "title": "暗号技術の定式化",
+      "path": "formulation-of-cryptography",
+      "date": "2021/04/29",
+      "author": "Fumiyan"
+    },
+    {
       "title": "シンドローム復号",
       "path": "syndrome-decoding",
       "date": "????/??/??",
