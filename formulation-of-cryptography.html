@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+<title>暗号技術の定式化 - CBC Docs</title>
+<style>
+  body {
+    background-color: #efefef !important;
+  }
+  main {
+    display: grid;
+    max-width: 1250px;
+    grid-template-columns: 250px 1fr;
+    margin: 0px auto;
+    box-sizing: border-box;
+  }
+  .main__nav {
+    grid-column: 1;
+    padding: 1rem;
+  }
+  .main__nav nav {
+    padding: 1em 0px;
+  }
+  .main__nav nav div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .main__body {
+    width: 800px;
+    grid-column: 2;
+    padding: 2em;
+    background-color: #fff;
+    overflow: auto;
+  }
+  .article-head {
+    padding-bottom: 3em;
+  }
+  .article-head span {
+    font-size: small;
+    color: #666;
+  }
+  .article-head h1 {
+    margin: 0.2rem 0px;
+  }
+  .article-head__author {
+    text-align: right;
+    font-size: small;
+  }
+  .site {
+    font-size: 2em;
+    font-weight: bold;
+    color: #454545;
+  }
+  .center {
+    text-align: center;
+  }
+  table {
+    margin: 1em auto;
+    border-collapse: collapse;
+  }
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 0.2em 0.5em;
+  }
+  article p {
+    margin: 2px 0px;
+    text-indent: 1em;
+  }
+  article h1 {
+    border-bottom: 2px solid #ddd;
+    font-size: 2rem;
+  }
+  article h4 {
+    margin-bottom: 0px;
+  }
+  article h4 + p {
+    margin-top: 0px;
+  }
+  blockquote hr {
+    margin: 2px 0px;
+  }
+  article img {
+    max-width: 100%;
+    margin: 1em 0px;
+  }
+  article mjx-container {
+    overflow: auto;
+  }
+  article h1:before {
+    color: #aaa;
+  }
+  article h1#ch-1:before {
+    content: "1. ";
+  }
+  article h1#ch-2:before {
+    content: "2. ";
+  }
+  article h1#ch-3:before {
+    content: "3. ";
+  }
+  article h1#ch-4:before {
+    content: "4. ";
+  }
+  article h1#ch-5:before {
+    content: "5. ";
+  }
+  article details {
+    margin: 0.2em 0px;
+    padding: 0.2em;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #ffffffff;
+  }
+  article details[open] {
+    border: 1px solid #ddd;
+  }
+  @media screen and (max-width: 1250px) {
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .main__nav nav div {
+      display: inline-block;
+    }
+    .main__body {
+      box-sizing: border-box;
+      width: calc(100% - 1em);
+      padding: 1em;
+    }
+    article ul,article ol {
+      padding-left: 1em;
+    }
+  }
+</style>
+<script>
+  window.onload = () => {
+    const articleTag = document.querySelector(".main__body article")
+    // タグのナンバリング付け
+    const h1Tags = articleTag.querySelectorAll("h1")
+    h1Tags.forEach((tag, i) => {
+      tag.id = `ch-${i+1}`
+    })
+    // 画像を中央に配置させる
+    const imgTags = articleTag.querySelectorAll("p img")
+    imgTags.forEach(tag => {
+      tag.parentNode.classList.add("center")
+    })
+  }
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,
+                              Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+      color: #454545;
+      background-color: #fff;
+      margin: 0px;
+    }
+    .wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      box-sizing: border-box;
+    }
+    footer {
+      padding: 6px;
+      text-align: right;
+    }
+    .primary {
+      color: #fff;
+    }
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    a:active {
+      filter: brightness(50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <main>
+      
+<div class="main__nav">
+  <a href="/cbc-docs/" class="site">CBC Docs</a>
+  <nav>
+    
+      <div>
+        <a href="security-and-cryptography.html">
+          セキュリティと暗号技術
+        </a>
+      </div>
+    
+      <div>
+        <a href="algorithm-and-complexity.html">
+          アルゴリズムと計算量
+        </a>
+      </div>
+    
+      <div>
+        <a href="one-way-function.html">
+          一方向性関数
+        </a>
+      </div>
+    
+      <div>
+        <a href="indistinguishability.html">
+          識別不可能性
+        </a>
+      </div>
+    
+      <div>
+        <a href="semantic-security.html">
+          強秘匿性
+        </a>
+      </div>
+    
+      <div>
+        <a href="chosen-plaintext-attack.html">
+          選択平文攻撃(CPA)
+        </a>
+      </div>
+    
+      <div>
+        <a href="chosen-ciphertext-attack.html">
+          選択暗号文攻撃(CCA)
+        </a>
+      </div>
+    
+      <div>
+        <a href="rsa.html">
+          RSA暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="elgamal.html">
+          ElGamal暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="formulation-of-cryptography.html">
+          暗号技術の定式化
+        </a>
+      </div>
+    
+      <div>
+        <a href="syndrome-decoding.html">
+          シンドローム復号
+        </a>
+      </div>
+    
+      <div>
+        <a href="information-set-decoding.html">
+          情報集合復号
+        </a>
+      </div>
+    
+      <div>
+        <a href="code-equivalence.html">
+          符号等価性
+        </a>
+      </div>
+    
+      <div>
+        <a href="low-density-parity-check-codes.html">
+          LDPC符号
+        </a>
+      </div>
+    
+      <div>
+        <a href="quasi-cyclic-codes.html">
+          QC符号
+        </a>
+      </div>
+    
+      <div>
+        <a href="qc-ldpc-codes.html">
+          QC-LDPC符号
+        </a>
+      </div>
+    
+      <div>
+        <a href="mc-eliece.html">
+          McEliece暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="niederreiter.html">
+          Niederreiter暗号
+        </a>
+      </div>
+    
+      <div>
+        <a href="sample.html">
+          Sampleページ
+        </a>
+      </div>
+    
+  </nav>
+</div>
+<div class="main__body">
+  <div class="article-head">
+    <span>2021/04/29</span>
+    <h1>暗号技術の定式化</h1>
+    <div class="article-head__author">Author: <i>Fumiyan</i></div>
+  </div>
+  <article>
+    <!-- 
+目的: 暗号技術の定式化について理解する
+キーワード: 暗号化方式の定式化，セキュリティパラメータ
+-->
+
+<h1>はじめに - Before You Read</h1>
+<p>本記事では暗号技術について評価・議論する際に必須となるいくつかの定式化 (formulation) についてまとめた．</p>
+<h1>準備 - Preparetion</h1>
+<h2>Def. セキュリティパラメータ (security parameter)</h2>
+<p><strong>セキュリティパラメータ</strong> (security parameter) は，公開鍵や秘密鍵のサイズを決定する値である．
+通常，この値を大きくすると安全性が強まるが代わりに効率性が低下するため，実際に利用する際には適当なパラメータの選択が必要となる．</p>
+<p><strong>注</strong>)
+一般に，セキュリティパラメータは<span><span class="MathJax_Preview">\kappa</span><script type="math/tex">\kappa</script></span>で表される．
+例えば，<span><span class="MathJax_Preview">1^{\kappa}</span><script type="math/tex">1^{\kappa}</script></span>は1を<span><span class="MathJax_Preview">\kappa</span><script type="math/tex">\kappa</script></span>個並べた列 (つまり，<span><span class="MathJax_Preview">\underbrace{1 1 \dots 1}_{\kappa\mbox{個}}</span><script type="math/tex">\underbrace{1 1 \dots 1}_{\kappa\mbox{個}}</script></span>) であり，鍵のサイズが<span><span class="MathJax_Preview">\kappa</span><script type="math/tex">\kappa</script></span>ビットであることを表している．</p>
+<h1>様々な暗号化方式 - Various Cryptosystem</h1>
+<h2>Def. 共通鍵暗号化方式 (common-key cryptosystem)</h2>
+<p><strong>共通鍵暗号化方式</strong> (common-key cryptosystem) または <strong>秘密鍵暗号化方式</strong> (secret-key cryptosystem)，<strong>対称鍵暗号化方式</strong> (symmetric-key cryptosystem) とは，以下の仕様を充たす確率的アルゴリズムの組<span><span class="MathJax_Preview">\Pi = (\mathrm{Gen}, \mathrm{Enc}, \mathrm{Dec})</span><script type="math/tex">\Pi = (\mathrm{Gen}, \mathrm{Enc}, \mathrm{Dec})</script></span>のことと定める．
+ここでそれぞれのアルゴリズムは，セキュリティパラメータに関する多項式時間アルゴリズムであるとする．</p>
+<ul>
+<li><strong>鍵生成</strong> (key generation) <strong>アルゴリズム</strong><span><span class="MathJax_Preview">\mathrm{Gen}</span><script type="math/tex">\mathrm{Gen}</script></span>は，セキュリティパラメータ<span><span class="MathJax_Preview">\kappa</span><script type="math/tex">\kappa</script></span>を入力とし，秘密鍵<span><span class="MathJax_Preview">\mathrm{sk}</span><script type="math/tex">\mathrm{sk}</script></span>を出力する：</li>
+</ul>
+<div>
+<div class="MathJax_Preview">\mathrm{sk} \leftarrow \mathrm{Gen}(1^{\kappa}).</div>
+<script type="math/tex; mode=display">\mathrm{sk} \leftarrow \mathrm{Gen}(1^{\kappa}).</script>
+</div>
+<ul>
+<li><strong>暗号化</strong> (encryption) <strong>アルゴリズム</strong><span><span class="MathJax_Preview">\mathrm{Enc}</span><script type="math/tex">\mathrm{Enc}</script></span>は，秘密鍵<span><span class="MathJax_Preview">\mathrm{sk}</span><script type="math/tex">\mathrm{sk}</script></span>と平文<span><span class="MathJax_Preview">m\in\mathcal{M}</span><script type="math/tex">m\in\mathcal{M}</script></span>を入力とし，暗号文<span><span class="MathJax_Preview">\mathrm{Enc}_{\mathrm{sk}}(m) = c\in\mathcal{C}</span><script type="math/tex">\mathrm{Enc}_{\mathrm{sk}}(m) = c\in\mathcal{C}</script></span>を出力する：</li>
+</ul>
+<div>
+<div class="MathJax_Preview">c \leftarrow \mathrm{Enc}_{\mathrm{sk}}(m).</div>
+<script type="math/tex; mode=display">c \leftarrow \mathrm{Enc}_{\mathrm{sk}}(m).</script>
+</div>
+<ul>
+<li><strong>復号</strong> (decryption) <strong>アルゴリズム</strong><span><span class="MathJax_Preview">\mathrm{Dec}</span><script type="math/tex">\mathrm{Dec}</script></span>は，秘密鍵<span><span class="MathJax_Preview">\mathrm{sk}</span><script type="math/tex">\mathrm{sk}</script></span>と暗号文<span><span class="MathJax_Preview">c\in\mathcal{C}</span><script type="math/tex">c\in\mathcal{C}</script></span>を入力とし，平文<span><span class="MathJax_Preview">\mathrm{Dec}_{\mathrm{sk}}(c) = m'\in\mathcal{M}</span><script type="math/tex">\mathrm{Dec}_{\mathrm{sk}}(c) = m'\in\mathcal{M}</script></span>あるいは<span><span class="MathJax_Preview">\perp</span><script type="math/tex">\perp</script></span> (復号が失敗したことを表す) のいずれかを出力する：</li>
+</ul>
+<div>
+<div class="MathJax_Preview">m' \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c)\ \mbox{または} \perp \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c).</div>
+<script type="math/tex; mode=display">m' \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c)\ \mbox{または} \perp \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c).</script>
+</div>
+<h2>Def. 公開鍵暗号化方式 (public-key cryptosystem)</h2>
+<p><strong>公開鍵暗号化方式</strong> (public-key cryptosystem) とは，以下の仕様を充たす確率的アルゴリズムの組<span><span class="MathJax_Preview">\Pi = (\mathrm{Gen}, \mathrm{Enc}, \mathrm{Dec})</span><script type="math/tex">\Pi = (\mathrm{Gen}, \mathrm{Enc}, \mathrm{Dec})</script></span>のことと定める．
+ここでそれぞれのアルゴリズムは，セキュリティパラメータに関する多項式時間アルゴリズムであるとする．</p>
+<ul>
+<li><strong>鍵生成アルゴリズム</strong><span><span class="MathJax_Preview">\mathrm{Gen}</span><script type="math/tex">\mathrm{Gen}</script></span>は，セキュリティパラメータ<span><span class="MathJax_Preview">\kappa</span><script type="math/tex">\kappa</script></span>を入力とし，公開鍵<span><span class="MathJax_Preview">\mathrm{pk}</span><script type="math/tex">\mathrm{pk}</script></span>と秘密鍵<span><span class="MathJax_Preview">\mathrm{sk}</span><script type="math/tex">\mathrm{sk}</script></span>の対 (これを「鍵対 (かぎつい)」ともよぶ) を出力する：</li>
+</ul>
+<div>
+<div class="MathJax_Preview">(\mathrm{pk}, \mathrm{sk}) \leftarrow \mathrm{Gen}(1^{\kappa}).</div>
+<script type="math/tex; mode=display">(\mathrm{pk}, \mathrm{sk}) \leftarrow \mathrm{Gen}(1^{\kappa}).</script>
+</div>
+<ul>
+<li><strong>暗号化アルゴリズム</strong><span><span class="MathJax_Preview">\mathrm{Enc}</span><script type="math/tex">\mathrm{Enc}</script></span>は，公開鍵<span><span class="MathJax_Preview">\mathrm{pk}</span><script type="math/tex">\mathrm{pk}</script></span>と平文<span><span class="MathJax_Preview">m\in\mathcal{M}</span><script type="math/tex">m\in\mathcal{M}</script></span>を入力とし，暗号文<span><span class="MathJax_Preview">\mathrm{Enc}_{\mathrm{pk}}(m) = c\in\mathcal{C}</span><script type="math/tex">\mathrm{Enc}_{\mathrm{pk}}(m) = c\in\mathcal{C}</script></span>を出力する：</li>
+</ul>
+<div>
+<div class="MathJax_Preview">c \leftarrow \mathrm{Enc}_{\mathrm{pk}}(m).</div>
+<script type="math/tex; mode=display">c \leftarrow \mathrm{Enc}_{\mathrm{pk}}(m).</script>
+</div>
+<ul>
+<li><strong>復号アルゴリズム</strong><span><span class="MathJax_Preview">\mathrm{Dec}</span><script type="math/tex">\mathrm{Dec}</script></span>は，秘密鍵<span><span class="MathJax_Preview">\mathrm{sk}</span><script type="math/tex">\mathrm{sk}</script></span>と暗号文<span><span class="MathJax_Preview">c\in\mathcal{C}</span><script type="math/tex">c\in\mathcal{C}</script></span>を入力とし，平文<span><span class="MathJax_Preview">\mathrm{Dec}_{\mathrm{sk}}(c) = m'\in\mathcal{M}</span><script type="math/tex">\mathrm{Dec}_{\mathrm{sk}}(c) = m'\in\mathcal{M}</script></span>あるいは<span><span class="MathJax_Preview">\perp</span><script type="math/tex">\perp</script></span>のいずれかを出力する：</li>
+</ul>
+<div>
+<div class="MathJax_Preview">m' \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c)\ \mbox{または} \perp \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c).</div>
+<script type="math/tex; mode=display">m' \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c)\ \mbox{または} \perp \leftarrow \mathrm{Dec}_{\mathrm{sk}}(c).</script>
+</div>
+<p><strong>注</strong>)
+上記の定義では復号アルゴリズムの入力に公開鍵<span><span class="MathJax_Preview">\mathrm{pk}</span><script type="math/tex">\mathrm{pk}</script></span>は含まれないが，実際の方式においては復号時に公開鍵の情報も必要となることがある．
+そのため，暗号分野の文献では，復号アルゴリズムの入力が公開鍵を含んでいると暗に仮定している場合が多い．<span><span class="MathJax_Preview">\Box</span><script type="math/tex">\Box</script></span></p>
+<h1>参考文献 - References</h1>
+<ol>
+<li>
+<p>IPUSIRON，暗号技術のすべて，翔泳社，2017．</p>
+</li>
+<li>
+<p>縫田光司，耐量子計算機暗号，森北出版，2020．</p>
+</li>
+</ol>
+  </article>
+</div>
+
+    </main>
+    <footer>
+      ©2020 ShiromoL301
+    </footer>
+  </div>
+
+  <script>
+    window.MathJax = {
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process',
+        renderActions: {
+          find: [10, function (doc) {
+            for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              const sibling = node.previousElementSibling;
+              node.parentNode.replaceChild(text, node);
+              math.start = { node: text, delim: '', n: 0 };
+              math.end = { node: text, delim: '', n: 0 };
+              doc.math.push(math);
+              if (sibling && sibling.matches('.MathJax_Preview')) {
+                sibling.parentNode.removeChild(sibling);
+              }
+            }
+          }, '']
+        }
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script src="https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js"></script>
+</body>
+
+</html>
